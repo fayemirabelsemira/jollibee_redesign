@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#6B0F14">
+  <meta name="description" content="Jollibee: crispy Chickenjoy, Jolly Spaghetti, Kiddie Meals and more. Browse the menu, grab deals and build your order.">
+
+  <title>Jollibee · Joy that tastes like home</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("jb.theme");
+        if (t === "dark" || t === "light") {
+          document.documentElement.setAttribute("data-theme", t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+
+<body data-page="home">
+
+<a class="skip" href="#main" onclick="event.preventDefault();document.getElementById('main').focus()">Skip to content</a>
+
+<header class="top">
+  <a class="logo" href="#/" aria-label="Jollibee home">
+    <img data-img="l" alt="Jollibee logo" width="44" height="44">
+  </a>
+
+  <div class="top-right">
+    <button
+      class="themebtn"
+      type="button"
+      id="theme-toggle"
+      aria-label="Switch to dark mode"
+      title="Toggle light / dark mode"
+    >
+      <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+      </svg>
+      <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5z"/>
+      </svg>
+    </button>
+
+    <nav aria-label="Main">
+      <a href="#/menu" data-nav="menu">Menu</a>
+      <a href="#/story" data-nav="story">Our story</a>
+      <a href="#/toys" data-nav="toys">Toys</a>
+      <a href="#/promos" data-nav="promos">Promos</a>
+      <a href="#/deals" data-nav="deals">Deals</a>
+      <a href="#/stores" data-nav="stores">Stores</a>
+      <a href="#/account" data-nav="account">Account</a>
+
+      <!-- Ops opens left sidebar (same-tab links to ops pages) -->
+      <button type="button" class="nav-admin ops-trigger" id="ops-open" aria-expanded="false" aria-controls="ops-drawer">
+        Ops
+      </button>
+
+      <a href="admin.html" class="nav-admin">Admin</a>
+
+      <button class="cartbtn" type="button" data-route="#/cart" aria-label="Cart">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 10.5h10.2L20 7H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
+        <span id="cnt" class="cnt">0</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== Ops left sidebar drawer ===== -->
+<div class="ops-scrim" id="ops-scrim" hidden></div>
+<aside class="ops-drawer" id="ops-drawer" aria-label="Operations menu" hidden>
+  <div class="ops-drawer-head">
+    <div class="ops-brand">
+      <span class="ops-bee">J</span>
+      <div>
+        <strong>Jollibee Ops</strong>
+        <small>Information System</small>
+      </div>
+    </div>
+    <button type="button" class="ops-close" id="ops-close" aria-label="Close ops menu">×</button>
+  </div>
+
+  <div class="ops-company">
+    <strong>Jollibee Foods Corporation</strong>
+    <p>Filipino fast-food company known for affordable, convenient meals.</p>
+  </div>
+
+  <nav class="ops-nav" aria-label="Operations pages">
+    <a href="ops.html#/">▣ Dashboard</a>
+    <a href="ops.html#/ordering">📦 Ordering to Supplier</a>
+    <a href="ops.html#/supplier-payments">💳 Payment to Supplier</a>
+    <a href="ops.html#/sales">🛒 Sales from Customer</a>
+    <a href="ops.html#/customer-payments">💵 Payment from Customer</a>
+    <a href="ops.html#/inventory">📋 Inventory</a>
+    <a href="ops.html#/company">🏢 Company Info</a>
+  </nav>
+
+  <p class="ops-foot">Opens in this tab · Platform Technologies</p>
+</aside>
+
+<main id="main" tabindex="-1"></main>
+
+<footer>
+  <a class="logo" href="#/" aria-label="Jollibee home">
+    <img data-img="l" alt="Jollibee logo" width="72" height="72">
+  </a>
+  <p>
+    Student project website · menu items and prices are sample content.
+    Snoopy and Woodstock toy photos belong to their respective owners.
+  </p>
+</footer>
+
+<div class="bar" id="bar" role="status">
+  <span class="bar-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="M3 4h2l2.4 10.5h10.2L20 7H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg></span>
+  <span id="sum"><small id="sumn"></small><b id="sumt"></b></span>
+  <button class="clr" type="button" onclick="clr()">Clear</button>
+  <button class="go" type="button" data-route="#/cart">Review order <span aria-hidden="true">→</span></button>
+</div>
+
+<div class="scrim" id="scrim" data-close hidden></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Your order" hidden></div>
+
+<nav class="tabbar" aria-label="Quick navigation">
+  <a href="#/menu" data-nav="menu">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+    <span>Menu</span>
+  </a>
+  <a href="#/deals" data-nav="deals">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12l-8 8-9-9V4h7z"/><circle cx="8" cy="8" r="1.5"/></svg>
+    <span>Deals</span>
+  </a>
+  <a href="#/account" data-nav="account">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 19c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>
+    <span>Account</span>
+  </a>
+  <button class="cartbtn" type="button" data-route="#/cart" data-nav="cart" aria-label="Cart">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 10.5h10.2L20 7H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
+    <span>Cart</span>
+    <b class="cnt" aria-hidden="true">0</b>
+  </button>
+</nav>
+
+<div id="live" class="sr" aria-live="polite"></div>
+
+<noscript>
+  <p style="padding:20px;text-align:center">
+    This site needs JavaScript to show the menu and your order.
+  </p>
+</noscript>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="art.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+
+<!-- Ops sidebar toggle -->
+<script>
+(function () {
+  var openBtn = document.getElementById("ops-open");
+  var closeBtn = document.getElementById("ops-close");
+  var drawer = document.getElementById("ops-drawer");
+  var scrim = document.getElementById("ops-scrim");
+  if (!openBtn || !drawer || !scrim) return;
+
+  function openOps() {
+    drawer.hidden = false;
+    scrim.hidden = false;
+    requestAnimationFrame(function () {
+      drawer.classList.add("open");
+      scrim.classList.add("open");
+    });
+    openBtn.setAttribute("aria-expanded", "true");
+    document.body.classList.add("ops-drawer-open");
+  }
+
+  function closeOps() {
+    drawer.classList.remove("open");
+    scrim.classList.remove("open");
+    openBtn.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("ops-drawer-open");
+    setTimeout(function () {
+      if (!drawer.classList.contains("open")) {
+        drawer.hidden = true;
+        scrim.hidden = true;
+      }
+    }, 220);
+  }
+
+  openBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    if (drawer.classList.contains("open")) closeOps();
+    else openOps();
+  });
+  closeBtn.addEventListener("click", closeOps);
+  scrim.addEventListener("click", closeOps);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && drawer.classList.contains("open")) closeOps();
+  });
+})();
+</script>
+
+</body>
+</html>

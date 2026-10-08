@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#730007">
+  <title>Jollibee Operations · Information System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --red: #730007;
+      --red-d: #4A0005;
+      --red-soft: #8B1018;
+      --sun: #FFC72C;
+      --sun-soft: #FFF3C4;
+      --bg: #F7F0E6;
+      --panel: #FFFFFF;
+      --ink: #1F1210;
+      --mute: #6B5650;
+      --line: #E8DCC8;
+      --line-soft: #F3EADF;
+      --ok: #15803D;
+      --ok-bg: #DCFCE7;
+      --bad: #B91C1C;
+      --bad-bg: #FEE2E2;
+      --warn: #B45309;
+      --warn-bg: #FEF3C7;
+      --info: #1D4ED8;
+      --info-bg: #DBEAFE;
+      --side: 272px;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --body: Figtree, system-ui, sans-serif;
+      --display: Fredoka, system-ui, sans-serif;
+      --sh: 0 1px 2px rgba(80,40,20,.04), 0 8px 24px rgba(80,40,20,.06);
+      --sh-sm: 0 1px 2px rgba(80,40,20,.05);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      font: 14.5px/1.5 var(--body);
+      color: var(--ink);
+      background: var(--bg);
+      display: flex;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+
+    /* ========== SIDEBAR ========== */
+    .sidebar {
+      width: var(--side);
+      flex: none;
+      background: linear-gradient(180deg, #7A0A10 0%, var(--red) 40%, var(--red-d) 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      border-right: 1px solid rgba(0,0,0,.15);
+    }
+    .side-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 22px 18px 18px;
+    }
+    .side-brand .bee {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: var(--sun);
+      color: var(--red);
+      display: grid; place-items: center;
+      font: 700 18px/1 var(--display);
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+      flex: none;
+    }
+    .side-brand strong {
+      display: block;
+      font: 600 15px/1.2 var(--display);
+      letter-spacing: -.01em;
+    }
+    .side-brand small {
+      display: block;
+      margin-top: 2px;
+      opacity: .7;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .side-company {
+      margin: 0 14px 16px;
+      padding: 16px 16px 18px;
+      background: rgba(0,0,0,.25);
+      border-radius: var(--radius);
+      font-size: 13.5px;
+      line-height: 1.5;
+      border: 1px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(4px);
+    }
+    .side-company strong {
+      display: block;
+      font: 700 15px/1.3 var(--display);
+      margin-bottom: 8px;
+      color: var(--sun);
+      letter-spacing: -.01em;
+    }
+    .side-company p {
+      margin: 0 0 12px;
+      opacity: .92;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .side-company .lbl {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      opacity: .65;
+      margin-top: 12px;
+      margin-bottom: 4px;
+      color: rgba(255,255,255,.9);
+    }
+    .side-company .val {
+      display: block;
+      font-size: 13.5px;
+      line-height: 1.45;
+      opacity: .95;
+      font-weight: 500;
+    }
+
+    .side-nav {
+      padding: 4px 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+    }
+    .side-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 13.5px;
+      color: rgba(255,255,255,.82);
+      transition: background .15s, color .15s, transform .12s;
+    }
+    .side-nav a:hover {
+      background: rgba(255,255,255,.1);
+      color: #fff;
+    }
+    .side-nav a.active {
+      background: #fff;
+      color: var(--red);
+      box-shadow: var(--sh-sm);
+    }
+    .side-nav .ico {
+      width: 20px;
+      text-align: center;
+      font-size: 14px;
+      opacity: .95;
+      flex: none;
+    }
+    .side-foot {
+      padding: 14px 18px 18px;
+      border-top: 1px solid rgba(255,255,255,.1);
+      font-size: 10.5px;
+      opacity: .6;
+      line-height: 1.45;
+    }
+    .side-back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 8px 12px 10px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      background: #FFC72C;
+      color: #6B0F14;
+      font-weight: 800;
+      font-size: 13.5px;
+      text-decoration: none;
+      transition: background .15s, transform .1s;
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    .side-back:hover {
+      background: #ffd54f;
+      color: #6B0F14;
+    }
+    .side-back:active { transform: scale(.98); }
+    .topbar-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: var(--red);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .topbar-back:hover { background: var(--red-d, #4A090D); color: #fff; }
+
+    /* ========== MAIN ========== */
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background:
+        radial-gradient(ellipse 80% 50% at 100% 0%, rgba(255,199,44,.08), transparent 50%),
+        var(--bg);
+    }
+    .topbar {
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .topbar h1 {
+      margin: 0;
+      font: 600 22px/1.15 var(--display);
+      color: var(--red);
+      letter-spacing: -.02em;
+    }
+    .topbar .meta {
+      color: var(--mute);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+    #clock {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--mute);
+      background: var(--line-soft);
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+    .content {
+      padding: 28px 32px 56px;
+      max-width: 1040px;
+      width: 100%;
+    }
+
+    /* ========== STATS ========== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 520px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 18px 16px;
+      box-shadow: var(--sh-sm);
+      position: relative;
+      overflow: hidden;
+    }
+    .stat::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--line);
+      border-radius: 3px 0 0 3px;
+    }
+    .stat.ok::before { background: var(--ok); }
+    .stat.warn::before { background: var(--warn); }
+    .stat.bad::before { background: var(--bad); }
+    .stat label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--mute);
+      margin-bottom: 8px;
+    }
+    .stat b {
+      font: 600 26px/1.1 var(--display);
+      color: var(--ink);
+      letter-spacing: -.02em;
+    }
+    .stat.ok b { color: var(--ok); }
+    .stat.warn b { color: var(--warn); }
+    .stat.bad b { color: var(--bad); }
+
+    /* ========== PANELS ========== */
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--sh-sm);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .panel-h {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--line-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: linear-gradient(180deg, #FFFCFA, #fff);
+    }
+    .panel-h h2 {
+      margin: 0;
+      font: 600 15.5px/1.2 var(--display);
+      color: var(--ink);
+    }
+    .panel-b { padding: 18px 20px; }
+
+    /* ========== FORMS ========== */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px 16px;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 720px) {
+      .form-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+      .form-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .form-grid, .form-grid.cols-4, .form-grid.cols-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+    label.f,
+    label.field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--mute);
+      letter-spacing: .01em;
+    }
+    label.field span,
+    .field-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--mute);
+    }
+    .form-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .span-2 { grid-column: 1 / -1; }
+    .empty {
+      text-align: center;
+      color: var(--mute);
+      padding: 28px 16px;
+      font-size: 13.5px;
+    }
+    .empty-box {
+      text-align: center;
+      padding: 32px 20px;
+      color: var(--mute);
+    }
+    .empty-box strong {
+      display: block;
+      font: 600 15px var(--display);
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .empty-box p {
+      margin: 0;
+      font-size: 13px;
+    }
+    input, select, textarea {
+      min-height: 40px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: #FFFCFA;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(115,0,7,.12);
+      background: #fff;
+    }
+    textarea { min-height: 80px; resize: vertical; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 40px;
+      padding: 0 18px;
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: var(--red);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13.5px;
+      cursor: pointer;
+      transition: background .15s, transform .1s, box-shadow .15s;
+      box-shadow: 0 1px 2px rgba(115,0,7,.2);
+    }
+    .btn:hover { background: var(--red-soft); }
+    .btn:active { transform: scale(.98); }
+    .btn.sun {
+      background: var(--sun);
+      color: var(--ink);
+      box-shadow: 0 1px 2px rgba(180,120,0,.2);
+    }
+    .btn.sun:hover { background: #ffd54f; }
+    .btn.ghost {
+      background: transparent;
+      color: var(--red);
+      box-shadow: inset 0 0 0 1.5px var(--red);
+    }
+    .btn.ghost:hover { background: rgba(115,0,7,.06); }
+    .btn.sm { min-height: 32px; padding: 0 12px; font-size: 12.5px; }
+
+    /* ========== TABLES ========== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    th, td {
+      text-align: left;
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line-soft);
+      vertical-align: middle;
+    }
+    th {
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--mute);
+      font-weight: 700;
+      background: #FFFCFA;
+    }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:hover td { background: rgba(255,249,240,.6); }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: .02em;
+    }
+    .badge.Pending, .badge.Unpaid, .badge.Open { background: var(--warn-bg); color: var(--warn); }
+    .badge.Sent { background: var(--info-bg); color: var(--info); }
+    .badge.Received, .badge.Paid, .badge.Completed { background: var(--ok-bg); color: var(--ok); }
+    .badge.Reorder { background: var(--bad-bg); color: var(--bad); }
+    .badge.ok { background: var(--ok-bg); color: var(--ok); cursor: default; }
+
+    .msg {
+      min-height: 1.3em;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--mute);
+      margin-top: 8px;
+    }
+    .msg.ok { color: var(--ok); }
+    .msg.bad { color: var(--bad); }
+
+    /* ========== COMPANY PAGE ========== */
+    .company-hero {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--sh-sm);
+      padding: 28px 28px 24px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .company-hero::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--sun), var(--red));
+    }
+    .company-hero .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--red);
+      background: rgba(115,0,7,.06);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .company-hero h2 {
+      margin: 0 0 10px;
+      font: 600 24px/1.2 var(--display);
+      color: var(--ink);
+      letter-spacing: -.02em;
+    }
+    .company-hero .lead {
+      margin: 0 0 20px;
+      color: var(--mute);
+      font-size: 15px;
+      line-height: 1.55;
+      max-width: 52em;
+    }
+    .company-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    @media (max-width: 640px) {
+      .company-meta { grid-template-columns: 1fr; }
+    }
+    .meta-tile {
+      background: var(--bg);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+    }
+    .meta-tile span {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--mute);
+      margin-bottom: 4px;
+    }
+    .meta-tile p {
+      margin: 0;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 800px) {
+      .note-grid { grid-template-columns: 1fr; }
+    }
+    .note-card {
+      background: var(--bg);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .note-card h3 {
+      margin: 0 0 6px;
+      font: 600 13.5px/1.2 var(--display);
+      color: var(--red);
+    }
+    .note-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--mute);
+      line-height: 1.45;
+    }
+
+    /* legacy alias so old markup still works */
+    .company-card { display: none; }
+
+    .empty {
+      text-align: center;
+      color: var(--mute);
+      padding: 36px 16px;
+      font-size: 14px;
+    }
+
+    .cfg {
+      background: var(--sun-soft);
+      border: 1px solid #f0d99a;
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      font-size: 13px;
+      color: #6B4E00;
+    }
+    .cfg code {
+      background: rgba(0,0,0,.06);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 820px) {
+      body { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .side-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        flex: none;
+      }
+      .side-company { display: none; }
+      .content { padding: 20px 16px 40px; }
+      .topbar { padding: 14px 16px; }
+    }
+  </style>
+
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="side-brand">
+    <div class="bee">J</div>
+    <div>
+      <strong>Jollibee Ops</strong>
+      <small>Information System</small>
+    </div>
+  </div>
+  <div class="side-company">
+    <strong>Jollibee Foods Corporation</strong>
+    <p>Filipino fast-food company known for affordable, convenient meals across the Philippines and abroad.</p>
+    <span class="lbl">Nature of business</span>
+    <span class="val">Fast-food restaurant &amp; food service</span>
+    <span class="lbl">Products / services</span>
+    <span class="val">Chickenjoy, Jolly Spaghetti, Yumburger, fries, rice meals, beverages, desserts · dine-in, take-out, delivery</span>
+  </div>
+  <nav class="side-nav" id="nav">
+    <a href="#/" data-route="/"><span class="ico">▣</span> Dashboard</a>
+    <a href="#/ordering" data-route="/ordering"><span class="ico">📦</span> Ordering to Supplier</a>
+    <a href="#/supplier-payments" data-route="/supplier-payments"><span class="ico">💳</span> Payment to Supplier</a>
+    <a href="#/sales" data-route="/sales"><span class="ico">🛒</span> Sales from Customer</a>
+    <a href="#/customer-payments" data-route="/customer-payments"><span class="ico">💵</span> Payment from Customer</a>
+    <a href="#/inventory" data-route="/inventory"><span class="ico">📋</span> Inventory</a>
+    <a href="#/company" data-route="/company"><span class="ico">🏢</span> Company Info</a>
+  </nav>
+  <a class="side-back" href="index.html">← Back to website</a>
+  <div class="side-foot">
+    Student project · Jollibee Foods Corporation<br>
+    Platform Technologies · Supabase + Cloudflare
+  </div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div>
+      <h1 id="page-title">Dashboard</h1>
+      <div class="meta" id="page-meta">Operations overview</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <a class="topbar-back" href="index.html">← Website</a>
+      <div class="meta" id="clock"></div>
+    </div>
+  </header>
+  <div class="content" id="app">
+    <p class="empty">Loading…</p>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   SUPABASE CONFIG — paste your project values here
+   ========================================================= */
+const SUPABASE_URL = "https://oougwsdtbhpisflsociq.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_VilEjy5s_i2bMNx5v6VdtQ_AHIJgCv7";
+
+const hasConfig =
+  SUPABASE_URL.includes("supabase.co") &&
+  !SUPABASE_URL.includes("YOUR-PROJECT") &&
+  SUPABASE_ANON_KEY.length > 20 &&
+  !SUPABASE_ANON_KEY.includes("YOUR-ANON");
+
+let sb = null;
+if (hasConfig && window.supabase) {
+  sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const peso = n => "₱" + Number(n || 0).toLocaleString("en-PH", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmtDate = d => d ? new Date(d).toLocaleString("en-PH", { dateStyle: "medium", timeStyle: "short" }) : "—";
+
+function code(prefix) {
+  const t = new Date();
+  const r = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `${prefix}-${String(t.getFullYear()).slice(2)}${String(t.getMonth()+1).padStart(2,"0")}${String(t.getDate()).padStart(2,"0")}-${r}`;
+}
+
+function configBanner() {
+  if (hasConfig) return "";
+  return `<div class="cfg">
+    <strong>Connect Supabase:</strong> open this file and set
+    <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> near the top of the script.
+    Then run <code>ops-schema.sql</code> in the Supabase SQL Editor.
+    Until then, the pages show sample (demo) data.
+  </div>`;
+}
+
+/* ---------- demo data when Supabase is not configured ---------- */
+const DEMO = {
+  company: {
+    company_name: "Jollibee Foods Corporation (Jollibee)",
+    profile: "Jollibee is a Filipino fast-food company known for serving affordable and convenient meals. It operates many branches in the Philippines and other countries.",
+    nature: "Fast-food restaurant and food service business",
+    products: "Chickenjoy, Jolly Spaghetti, Yumburger, fries, rice meals, beverages, desserts, dine-in, take-out, and delivery services"
+  },
+  suppliers: [
+    { id: "s1", name: "Fresh Farm Produce Co.", contact: "0917-111-2222", email: "orders@freshfarm.ph" },
+    { id: "s2", name: "Golden Oil Trading", contact: "0918-333-4444", email: "sales@goldenoil.ph" },
+    { id: "s3", name: "Metro Packaging Inc.", contact: "0919-555-6666", email: "supply@metropack.ph" }
+  ],
+  menu: [
+    { id: "m1", name: "Chickenjoy", unit_price: 99 },
+    { id: "m2", name: "Jolly Spaghetti", unit_price: 60 },
+    { id: "m3", name: "Yumburger", unit_price: 45 },
+    { id: "m4", name: "Crispy Fries", unit_price: 40 },
+    { id: "m5", name: "Burger Steak", unit_price: 70 }
+  ],
+  inventory: [
+    { id: "i1", item_name: "Chicken (raw)", quantity: 120, unit: "kg", reorder_level: 40, unit_cost: 180 },
+    { id: "i2", item_name: "Spaghetti pasta", quantity: 18, unit: "kg", reorder_level: 25, unit_cost: 55 },
+    { id: "i3", item_name: "Burger buns", quantity: 200, unit: "pcs", reorder_level: 50, unit_cost: 8 },
+    { id: "i4", item_name: "Cooking oil", quantity: 12, unit: "L", reorder_level: 15, unit_cost: 95 },
+    { id: "i5", item_name: "French fries (frozen)", quantity: 60, unit: "kg", reorder_level: 20, unit_cost: 110 }
+  ],
+  pos: [],
+  payments: [],
+  sales: [],
+  customerPays: []
+};
+
+/* ---------- data access ---------- */
+async function apiList(table, order = "created_at") {
+  if (!sb) {
+    if (table === "ops_suppliers") return DEMO.suppliers;
+    if (table === "ops_menu_items") return DEMO.menu;
+    if (table === "ops_inventory") return DEMO.inventory;
+    if (table === "ops_purchase_orders") return DEMO.pos;
+    if (table === "ops_supplier_payments") return DEMO.payments;
+    if (table === "ops_sales") return DEMO.sales;
+    if (table === "ops_customer_payments") return DEMO.customerPays;
+    if (table === "ops_company_info") return [DEMO.company];
+    return [];
+  }
+  // Prefer the requested order column; fall back if that column does not exist
+  let q = sb.from(table).select("*");
+  if (order) q = q.order(order, { ascending: false });
+  let { data, error } = await q;
+  if (error && /column .* does not exist/i.test(error.message)) {
+    const retry = await sb.from(table).select("*");
+    if (retry.error) throw retry.error;
+    return retry.data || [];
+  }
+  if (error) throw error;
+  return data || [];
+}
+
+async function apiInsert(table, row) {
+  if (!sb) {
+    row.id = row.id || Math.random().toString(36).slice(2);
+    row.created_at = row.created_at || new Date().toISOString();
+    const map = {
+      ops_purchase_orders: "pos",
+      ops_supplier_payments: "payments",
+      ops_sales: "sales",
+      ops_customer_payments: "customerPays",
+      ops_inventory: "inventory"
+    };
+    const key = map[table];
+    if (key) DEMO[key].unshift(row);
+    return row;
+  }
+  const { data, error } = await sb.from(table).insert(row).select().single();
+  if (error) throw error;
+  return data;
+}
+
+async function apiUpdate(table, id, patch) {
+  if (!sb) {
+    const map = {
+      ops_purchase_orders: "pos",
+      ops_supplier_payments: "payments",
+      ops_sales: "sales",
+      ops_inventory: "inventory"
+    };
+    const key = map[table];
+    if (key) {
+      const i = DEMO[key].findIndex(x => x.id === id);
+      if (i >= 0) DEMO[key][i] = { ...DEMO[key][i], ...patch };
+    }
+    return;
+  }
+  const { error } = await sb.from(table).update(patch).eq("id", id);
+  if (error) throw error;
+}
+
+/* ---------- pages ---------- */
+const TITLES = {
+  "/": ["Dashboard", "Orders, sales, and stock at a glance"],
+  "/ordering": ["Ordering to Supplier", "Create and track purchase orders"],
+  "/supplier-payments": ["Payment to Supplier", "Record invoices and mark Paid / Unpaid"],
+  "/sales": ["Sales from Customer", "Record menu sales and order type"],
+  "/customer-payments": ["Payment from Customer", "Cash, card, or QR against an order"],
+  "/inventory": ["Inventory", "Stock levels and reorder flags"],
+  "/company": ["Company Information", "Jollibee Foods Corporation"]
+};
+
+async function pageDashboard() {
+  let pos = [], pays = [], sales = [], inv = [];
+  try {
+    [pos, pays, sales, inv] = await Promise.all([
+      apiList("ops_purchase_orders"),
+      apiList("ops_supplier_payments"),
+      apiList("ops_sales"),
+      apiList("ops_inventory", "updated_at")
+    ]);
+  } catch (e) {
+    return configBanner() + `<p class="msg bad">${esc(e.message)}</p>`;
+  }
+
+  const openPO = pos.filter(p => p.status === "Pending" || p.status === "Sent").length;
+  const owed = pays.filter(p => p.status === "Unpaid").reduce((a, p) => a + Number(p.amount), 0);
+  const today = new Date().toDateString();
+  const salesToday = sales
+    .filter(s => s.status === "Paid" && new Date(s.created_at).toDateString() === today)
+    .reduce((a, s) => a + Number(s.total || s.quantity * s.unit_price), 0);
+  const reorder = inv.filter(i => Number(i.quantity) <= Number(i.reorder_level));
+
+  return configBanner() + `
+    <div class="grid">
+      <div class="stat"><label>Open purchase orders</label><b>${openPO}</b></div>
+      <div class="stat ${owed ? "warn" : ""}"><label>Amount owed to suppliers</label><b>${peso(owed)}</b></div>
+      <div class="stat ok"><label>Sales today (paid)</label><b>${peso(salesToday)}</b></div>
+      <div class="stat ${reorder.length ? "bad" : ""}"><label>Items to reorder</label><b>${reorder.length}</b></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-h"><h2>Low stock</h2></div>
+      <div class="panel-b">
+        ${reorder.length ? `
+          <table>
+            <thead><tr><th>Item</th><th>Qty</th><th>Reorder at</th><th></th></tr></thead>
+            <tbody>
+              ${reorder.map(i => `
+                <tr>
+                  <td>${esc(i.item_name)}</td>
+                  <td>${esc(i.quantity)} ${esc(i.unit)}</td>
+                  <td>${esc(i.reorder_level)}</td>
+                  <td><span class="badge Reorder">Reorder</span></td>
+                </tr>`).join("")}
+            </tbody>
+          </table>` : `<p class="empty">All stock levels are healthy.</p>`}
+      </div>
+    </div>
+  `;
+}
+
+async function pageCompany() {
+  let co = DEMO.company;
+  try {
+    const rows = await apiList("ops_company_info", "updated_at");
+    if (rows[0]) co = rows[0];
+  } catch (_) {}
+
+  return `
+    <div class="company-hero">
+      <span class="eyebrow">Company profile</span>
+      <h2>${esc(co.company_name)}</h2>
+      <p class="lead">${esc(co.profile)}</p>
+      <div class="company-meta">
+        <div class="meta-tile">
+          <span>Nature of business</span>
+          <p>${esc(co.nature)}</p>
+        </div>
+        <div class="meta-tile">
+          <span>Products / services</span>
+          <p>${esc(co.products)}</p>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Platform notes</h2></div>
+      <div class="panel-b">
+        <div class="note-grid">
+          <div class="note-card">
+            <h3>Web platforms</h3>
+            <p>One site with a left sidebar and one page per operation using hash routes (#/ordering, #/sales, …).</p>
+          </div>
+          <div class="note-card">
+            <h3>Cloud</h3>
+            <p>Supabase (PostgreSQL) for data · Cloudflare Pages (or similar) for static hosting and HTTPS.</p>
+          </div>
+          <div class="note-card">
+            <h3>OS summary</h3>
+            <p>Windows 11 Pro · Windows 11 IoT (POS) · Android tablets · Embedded Payment OS · Router firmware.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function pageOrdering() {
+  let suppliers = [], rows = [];
+  try {
+    [suppliers, rows] = await Promise.all([apiList("ops_suppliers", "name"), apiList("ops_purchase_orders")]);
+  } catch (e) {
+    return configBanner() + `<p class="msg bad">${esc(e.message)}</p>`;
+  }
+
+  const options = suppliers.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join("");
+
+  setTimeout(() => {
+    const form = $("#po-form");
+    if (!form) return;
+    form.onsubmit = async e => {
+      e.preventDefault();
+      const msg = $("#po-msg");
+      try {
+        const qty = Number($("#po-qty").value);
+        const cost = Number($("#po-cost").value);
+        await apiInsert("ops_purchase_orders", {
+          po_code: code("PO"),
+          supplier_id: $("#po-supplier").value,
+          item_name: $("#po-item").value.trim(),
+          quantity: qty,
+          unit_cost: cost,
+          status: "Pending",
+          notes: $("#po-notes").value.trim() || null
+        });
+        msg.className = "msg ok";
+        msg.textContent = "Purchase order created.";
+        form.reset();
+        render();
+      } catch (err) {
+        msg.className = "msg bad";
+        msg.textContent = err.message;
+      }
+    };
+    $$("[data-po-status]").forEach(btn => {
+      btn.onclick = async () => {
+        const id = btn.dataset.id;
+        const cur = btn.dataset.poStatus;
+        const next = cur === "Pending" ? "Sent" : cur === "Sent" ? "Received" : "Received";
+        try {
+          await apiUpdate("ops_purchase_orders", id, { status: next, updated_at: new Date().toISOString() });
+          render();
+        } catch (err) { alert(err.message); }
+      };
+    });
+  }, 0);
+
+  const supplierName = id => (suppliers.find(s => s.id === id) || {}).name || id;
+
+  return configBanner() + `
+    <div class="panel">
+      <div class="panel-h"><h2>New purchase order</h2></div>
+      <div class="panel-b">
+        <form id="po-form">
+          <div class="form-grid">
+            <label class="field">Supplier
+              <select id="po-supplier" required>${options}</select>
+            </label>
+            <label class="field">Item
+              <input id="po-item" required placeholder="e.g. Chicken (raw)">
+            </label>
+            <label class="field">Quantity
+              <input id="po-qty" type="number" min="0.01" step="0.01" required value="10">
+            </label>
+            <label class="field">Unit cost (₱)
+              <input id="po-cost" type="number" min="0" step="0.01" required value="100">
+            </label>
+            <label class="field" style="grid-column:1/-1">Notes
+              <input id="po-notes" placeholder="Optional">
+            </label>
+          </div>
+          <button class="btn" type="submit">Create order</button>
+          <div class="msg" id="po-msg"></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Purchase orders</h2><span class="meta">Click status to advance: Pending → Sent → Received</span></div>
+      <div class="panel-b" style="overflow-x:auto">
+        ${rows.length ? `
+          <table>
+            <thead><tr><th>Code</th><th>Supplier</th><th>Item</th><th>Qty</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>
+              ${rows.map(r => `
+                <tr>
+                  <td>${esc(r.po_code)}</td>
+                  <td>${esc(supplierName(r.supplier_id))}</td>
+                  <td>${esc(r.item_name)}</td>
+                  <td>${esc(r.quantity)}</td>
+                  <td>${peso(r.total ?? r.quantity * r.unit_cost)}</td>
+                  <td><span class="badge ${esc(r.status)}" data-po-status="${esc(r.status)}" data-id="${esc(r.id)}">${esc(r.status)}</span></td>
+                  <td>${fmtDate(r.created_at)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>` : `<p class="empty">No purchase orders yet.</p>`}
+      </div>
+    </div>
+  `;
+}
+
+async function pageSupplierPayments() {
+  let suppliers = [], rows = [], pos = [];
+  try {
+    [suppliers, rows, pos] = await Promise.all([
+      apiList("ops_suppliers", "name"),
+      apiList("ops_supplier_payments"),
+      apiList("ops_purchase_orders")
+    ]);
+  } catch (e) {
+    return configBanner() + `<p class="msg bad">${esc(e.message)}</p>`;
+  }
+
+  setTimeout(() => {
+    const form = $("#sp-form");
+    if (!form) return;
+    form.onsubmit = async e => {
+      e.preventDefault();
+      const msg = $("#sp-msg");
+      try {
+        await apiInsert("ops_supplier_payments", {
+          invoice_code: code("INV"),
+          supplier_id: $("#sp-supplier").value,
+          purchase_order_id: $("#sp-po").value || null,
+          amount: Number($("#sp-amount").value),
+          method: $("#sp-method").value,
+          status: "Unpaid",
+          notes: $("#sp-notes").value.trim() || null
+        });
+        msg.className = "msg ok";
+        msg.textContent = "Invoice recorded.";
+        form.reset();
+        render();
+      } catch (err) {
+        msg.className = "msg bad";
+        msg.textContent = err.message;
+      }
+    };
+    $$("[data-sp-toggle]").forEach(btn => {
+      btn.onclick = async () => {
+        const id = btn.dataset.id;
+        const cur = btn.dataset.spToggle;
+        const next = cur === "Unpaid" ? "Paid" : "Unpaid";
+        try {
+          await apiUpdate("ops_supplier_payments", id, {
+            status: next,
+            paid_at: next === "Paid" ? new Date().toISOString() : null
+          });
+          render();
+        } catch (err) { alert(err.message); }
+      };
+    });
+  }, 0);
+
+  const supplierName = id => (suppliers.find(s => s.id === id) || {}).name || id;
+
+  return configBanner() + `
+    <div class="panel">
+      <div class="panel-h"><h2>Record invoice</h2></div>
+      <div class="panel-b">
+        <form id="sp-form">
+          <div class="form-grid">
+            <label class="field">
+              <span class="field-label">Supplier</span>
+              <select id="sp-supplier" required>
+                ${suppliers.map(s => `<option value="${esc(s.id)}">${esc(s.name)}</option>`).join("")}
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label">Amount (₱)</span>
+              <input id="sp-amount" type="number" min="0.01" step="0.01" required placeholder="0.00">
+            </label>
+            <label class="field">
+              <span class="field-label">Payment method</span>
+              <select id="sp-method">
+                <option>Bank Transfer</option>
+                <option>Check</option>
+                <option>Cash</option>
+                <option>Online</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-label">Linked PO</span>
+              <select id="sp-po">
+                <option value="">None</option>
+                ${pos.map(p => `<option value="${esc(p.id)}">${esc(p.po_code)}</option>`).join("")}
+              </select>
+            </label>
+            <label class="field span-2">
+              <span class="field-label">Notes</span>
+              <input id="sp-notes" placeholder="Optional note">
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="btn" type="submit">Save invoice</button>
+            <div class="msg" id="sp-msg"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h">
+        <h2>Payment history</h2>
+        ${rows.length ? `<span class="meta">Click status to toggle Unpaid ↔ Paid</span>` : ""}
+      </div>
+      <div class="panel-b" style="overflow-x:auto">
+        ${rows.length ? `
+          <table>
+            <thead><tr><th>Invoice</th><th>Supplier</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>
+              ${rows.map(r => `
+                <tr>
+                  <td><strong>${esc(r.invoice_code)}</strong></td>
+                  <td>${esc(supplierName(r.supplier_id))}</td>
+                  <td>${peso(r.amount)}</td>
+                  <td>${esc(r.method)}</td>
+                  <td><span class="badge ${esc(r.status)}" data-sp-toggle="${esc(r.status)}" data-id="${esc(r.id)}">${esc(r.status)}</span></td>
+                  <td>${fmtDate(r.created_at)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>` : `
+          <div class="empty-box">
+            <strong>No payments yet</strong>
+            <p>Record an invoice above to see it here.</p>
+          </div>`}
+      </div>
+    </div>
+  `;
+}
+
+async function pageSales() {
+  let menu = [], rows = [];
+  try {
+    [menu, rows] = await Promise.all([apiList("ops_menu_items", "name"), apiList("ops_sales")]);
+  } catch (e) {
+    return configBanner() + `<p class="msg bad">${esc(e.message)}</p>`;
+  }
+
+  setTimeout(() => {
+    const form = $("#sale-form");
+    if (!form) return;
+    const itemSel = $("#sale-item");
+    const priceEl = $("#sale-price");
+    const syncPrice = () => {
+      const m = menu.find(x => x.id === itemSel.value);
+      if (m) priceEl.value = m.unit_price;
+    };
+    itemSel.onchange = syncPrice;
+    syncPrice();
+    form.onsubmit = async e => {
+      e.preventDefault();
+      const msg = $("#sale-msg");
+      try {
+        const m = menu.find(x => x.id === itemSel.value);
+        await apiInsert("ops_sales", {
+          sale_code: code("SO"),
+          menu_item_id: itemSel.value,
+          quantity: Number($("#sale-qty").value),
+          unit_price: Number(priceEl.value),
+          order_type: $("#sale-type").value,
+          status: "Open"
+        });
+        msg.className = "msg ok";
+        msg.textContent = "Sale recorded.";
+        form.reset();
+        syncPrice();
+        render();
+      } catch (err) {
+        msg.className = "msg bad";
+        msg.textContent = err.message;
+      }
+    };
+  }, 0);
+
+  const itemName = id => (menu.find(m => m.id === id) || {}).name || id;
+
+  return configBanner() + `
+    <div class="panel">
+      <div class="panel-h"><h2>New sale</h2></div>
+      <div class="panel-b">
+        <form id="sale-form">
+          <div class="form-grid">
+            <label class="field">Menu item
+              <select id="sale-item" required>
+                ${menu.map(m => `<option value="${esc(m.id)}">${esc(m.name)} — ${peso(m.unit_price)}</option>`).join("")}
+              </select>
+            </label>
+            <label class="field">Quantity
+              <input id="sale-qty" type="number" min="1" step="1" value="1" required>
+            </label>
+            <label class="field">Unit price (₱)
+              <input id="sale-price" type="number" min="0" step="0.01" required>
+            </label>
+            <label class="field">Order type
+              <select id="sale-type">
+                <option>Dine-in</option>
+                <option>Take-out</option>
+                <option>Delivery</option>
+              </select>
+            </label>
+          </div>
+          <button class="btn" type="submit">Record sale</button>
+          <div class="msg" id="sale-msg"></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Sales</h2></div>
+      <div class="panel-b" style="overflow-x:auto">
+        ${rows.length ? `
+          <table>
+            <thead><tr><th>Code</th><th>Item</th><th>Qty</th><th>Total</th><th>Type</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>
+              ${rows.map(r => `
+                <tr>
+                  <td>${esc(r.sale_code)}</td>
+                  <td>${esc(itemName(r.menu_item_id))}</td>
+                  <td>${esc(r.quantity)}</td>
+                  <td>${peso(r.total ?? r.quantity * r.unit_price)}</td>
+                  <td>${esc(r.order_type)}</td>
+                  <td><span class="badge ${esc(r.status)}">${esc(r.status)}</span></td>
+                  <td>${fmtDate(r.created_at)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>` : `<p class="empty">No sales yet.</p>`}
+      </div>
+    </div>
+  `;
+}
+
+async function pageCustomerPayments() {
+  let sales = [], rows = [];
+  try {
+    [sales, rows] = await Promise.all([apiList("ops_sales"), apiList("ops_customer_payments")]);
+  } catch (e) {
+    return configBanner() + `<p class="msg bad">${esc(e.message)}</p>`;
+  }
+  const openSales = sales.filter(s => s.status === "Open");
+
+  setTimeout(() => {
+    const form = $("#cp-form");
+    if (!form) return;
+    form.onsubmit = async e => {
+      e.preventDefault();
+      const msg = $("#cp-msg");
+      try {
+        const saleId = $("#cp-sale").value;
+        const sale = sales.find(s => s.id === saleId);
+        const amount = Number($("#cp-amount").value);
+        await apiInsert("ops_customer_payments", {
+          payment_code: code("PAY"),
+          sale_id: saleId,
+          amount,
+          method: $("#cp-method").value,
+          status: "Completed"
+        });
+        await apiUpdate("ops_sales", saleId, { status: "Paid" });
+        msg.className = "msg ok";
+        msg.textContent = "Payment recorded. Sale marked Paid.";
+        form.reset();
+        render();
+      } catch (err) {
+        msg.className = "msg bad";
+        msg.textContent = err.message;
+      }
+    };
+    const saleSel = $("#cp-sale");
+    if (saleSel) {
+      saleSel.onchange = () => {
+        const s = sales.find(x => x.id === saleSel.value);
+        if (s) $("#cp-amount").value = s.total ?? s.quantity * s.unit_price;
+      };
+      saleSel.dispatchEvent(new Event("change"));
+    }
+  }, 0);
+
+  return configBanner() + `
+    <div class="panel">
+      <div class="panel-h"><h2>Record customer payment</h2></div>
+      <div class="panel-b">
+        <form id="cp-form">
+          <div class="form-grid">
+            <label class="field">Open order
+              <select id="cp-sale" required>
+                ${openSales.length
+                  ? openSales.map(s => `<option value="${esc(s.id)}">${esc(s.sale_code)} — ${peso(s.total ?? s.quantity * s.unit_price)}</option>`).join("")
+                  : `<option value="">No open sales</option>`}
+              </select>
+            </label>
+            <label class="field">Amount (₱)
+              <input id="cp-amount" type="number" min="0.01" step="0.01" required>
+            </label>
+            <label class="field">Method
+              <select id="cp-method">
+                <option>Cash</option>
+                <option>Card</option>
+                <option>QR</option>
+              </select>
+            </label>
+          </div>
+          <button class="btn" type="submit" ${openSales.length ? "" : "disabled"}>Save payment</button>
+          <div class="msg" id="cp-msg"></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Customer payments</h2></div>
+      <div class="panel-b" style="overflow-x:auto">
+        ${rows.length ? `
+          <table>
+            <thead><tr><th>Code</th><th>Sale</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>
+              ${rows.map(r => `
+                <tr>
+                  <td>${esc(r.payment_code)}</td>
+                  <td>${esc((sales.find(s => s.id === r.sale_id) || {}).sale_code || String(r.sale_id).slice(0,8))}</td>
+                  <td>${peso(r.amount)}</td>
+                  <td>${esc(r.method)}</td>
+                  <td><span class="badge ${esc(r.status)}">${esc(r.status)}</span></td>
+                  <td>${fmtDate(r.created_at)}</td>
+                </tr>`).join("")}
+            </tbody>
+          </table>` : `<p class="empty">No customer payments yet.</p>`}
+      </div>
+    </div>
+  `;
+}
+
+async function pageInventory() {
+  let rows = [];
+  try {
+    rows = await apiList("ops_inventory", "item_name");
+  } catch (e) {
+    return configBanner() + `<p class="msg bad">${esc(e.message)}</p>`;
+  }
+
+  setTimeout(() => {
+    const form = $("#inv-form");
+    if (!form) return;
+    form.onsubmit = async e => {
+      e.preventDefault();
+      const msg = $("#inv-msg");
+      try {
+        await apiInsert("ops_inventory", {
+          item_name: $("#inv-name").value.trim(),
+          quantity: Number($("#inv-qty").value),
+          unit: $("#inv-unit").value.trim() || "pcs",
+          reorder_level: Number($("#inv-reorder").value),
+          unit_cost: Number($("#inv-cost").value),
+          updated_at: new Date().toISOString()
+        });
+        msg.className = "msg ok";
+        msg.textContent = "Item added.";
+        form.reset();
+        render();
+      } catch (err) {
+        msg.className = "msg bad";
+        msg.textContent = err.message;
+      }
+    };
+  }, 0);
+
+  return configBanner() + `
+    <div class="panel">
+      <div class="panel-h"><h2>Add inventory item</h2></div>
+      <div class="panel-b">
+        <form id="inv-form">
+          <div class="form-grid">
+            <label class="field">Item name
+              <input id="inv-name" required placeholder="e.g. Chicken (raw)">
+            </label>
+            <label class="field">Quantity
+              <input id="inv-qty" type="number" min="0" step="0.01" value="0" required>
+            </label>
+            <label class="field">Unit
+              <input id="inv-unit" value="pcs" required>
+            </label>
+            <label class="field">Reorder level
+              <input id="inv-reorder" type="number" min="0" step="0.01" value="10" required>
+            </label>
+            <label class="field">Unit cost (₱)
+              <input id="inv-cost" type="number" min="0" step="0.01" value="0" required>
+            </label>
+          </div>
+          <button class="btn" type="submit">Add item</button>
+          <div class="msg" id="inv-msg"></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Stock</h2></div>
+      <div class="panel-b" style="overflow-x:auto">
+        ${rows.length ? `
+          <table>
+            <thead><tr><th>Item</th><th>Qty</th><th>Unit</th><th>Reorder at</th><th>Unit cost</th><th>Flag</th></tr></thead>
+            <tbody>
+              ${rows.map(r => {
+                const low = Number(r.quantity) <= Number(r.reorder_level);
+                return `<tr>
+                  <td>${esc(r.item_name)}</td>
+                  <td>${esc(r.quantity)}</td>
+                  <td>${esc(r.unit)}</td>
+                  <td>${esc(r.reorder_level)}</td>
+                  <td>${peso(r.unit_cost)}</td>
+                  <td>${low ? `<span class="badge Reorder">Reorder</span>` : `<span class="badge ok">OK</span>`}</td>
+                </tr>`;
+              }).join("")}
+            </tbody>
+          </table>` : `<p class="empty">No inventory items.</p>`}
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- router ---------- */
+const ROUTES = {
+  "/": pageDashboard,
+  "/ordering": pageOrdering,
+  "/supplier-payments": pageSupplierPayments,
+  "/sales": pageSales,
+  "/customer-payments": pageCustomerPayments,
+  "/inventory": pageInventory,
+  "/company": pageCompany
+};
+
+async function render() {
+  const hash = (location.hash || "#/").replace(/^#/, "") || "/";
+  const path = hash.split("?")[0] || "/";
+  const page = ROUTES[path] || ROUTES["/"];
+  const [title, meta] = TITLES[path] || TITLES["/"];
+
+  $("#page-title").textContent = title;
+  $("#page-meta").textContent = meta;
+  document.title = title + " · Jollibee Ops";
+
+  $$("#nav a").forEach(a => {
+    a.classList.toggle("active", a.getAttribute("data-route") === path);
+  });
+
+  const app = $("#app");
+  app.innerHTML = `<p class="empty">Loading…</p>`;
+  try {
+    app.innerHTML = await page();
+  } catch (e) {
+    app.innerHTML = configBanner() + `<p class="msg bad">${esc(e.message)}</p>`;
+  }
+}
+
+addEventListener("hashchange", render);
+render();
+
+setInterval(() => {
+  const el = $("#clock");
+  if (el) el.textContent = new Date().toLocaleString("en-PH", { dateStyle: "medium", timeStyle: "short" });
+}, 1000);
+</script>
+</body>
+</html>
