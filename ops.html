@@ -39,7 +39,7 @@
       --sh-sm: 0 1px 2px rgba(80,40,20,.05);
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; }
+    html, body { margin: 0; }
     body {
       font: 14.5px/1.5 var(--body);
       color: var(--ink);
@@ -61,6 +61,7 @@
       flex-direction: column;
       position: sticky;
       top: 0;
+      align-self: flex-start;
       height: 100vh;
       overflow-y: auto;
       border-right: 1px solid rgba(0,0,0,.15);
@@ -639,8 +640,103 @@
       .content { padding: 20px 16px 40px; }
       .topbar { padding: 14px 16px; }
     }
+
+    /* ========== ADD-ON STYLES (HR + Accounting) ========== */
+    .nav-group{margin:12px 6px 2px;font:700 10.5px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:8px}
+    .nav-group::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sun)}
+    .nav-group.g-hr::before{background:#60A5FA}.nav-group.g-ac::before{background:#F472B6}
+    @media (max-width: 820px){.nav-group{display:none}}
+    .num{text-align:right}
+    .cycle-title{font:600 15px/1 var(--display);margin:22px 0 10px;padding-left:10px;border-left:4px solid var(--sun);color:var(--red-d)}
+    .cycle-title.re{border-color:#16A34A}.cycle-title.hr{border-color:#2563EB}.cycle-title.ac{border-color:#DB2777}
+    .note-grid.four{grid-template-columns:repeat(4,1fr)}
+    @media(max-width:1100px){.note-grid.four{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:600px){.note-grid.four{grid-template-columns:1fr}}
+    .badge.Active,.badge.Present{background:var(--ok-bg);color:var(--ok)}
+    .badge.Inactive,.badge.Absent{background:var(--bad-bg);color:var(--bad)}
+    .badge.Late,.badge.Draft,.badge.Leave{background:var(--warn-bg);color:var(--warn)}
+    .badge.static{cursor:default}
+    .badge.src.SALE{background:#DCFCE7;color:#15803D}.badge.src.PURCHASE{background:#FEF3C7;color:#B45309}
+    .badge.src.SUPPLIER_PAYMENT{background:#FFEDD5;color:#C2410C}.badge.src.PAYROLL{background:#DBEAFE;color:#1D4ED8}
+    .badge.src.MANUAL{background:#F3E8FF;color:#7E22CE}.badge.src.OPENING{background:#E5E7EB;color:#374151}
+    .badge.type.Asset{background:#DBEAFE;color:#1D4ED8}.badge.type.Liability{background:#FEE2E2;color:#B91C1C}
+    .badge.type.Equity{background:#F3E8FF;color:#7E22CE}.badge.type.Revenue{background:#DCFCE7;color:#15803D}
+    .badge.type.Expense{background:#FEF3C7;color:#B45309}
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-bottom:20px}
+    @media(max-width:1000px){.split{grid-template-columns:1fr}}
+    .split .panel{margin-bottom:0}
+    .fine{font-size:12px;color:var(--mute);margin:10px 0 0}
+    .lnk{color:var(--red);text-decoration:underline}
+    .tot-row td{font-weight:700;border-top:2px solid var(--line);background:var(--line-soft)}
+    table.fs td{padding:7px 10px}
+    table.fs tr.sec td{font:700 11px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding-top:14px;border-bottom:1px solid var(--line)}
+    table.fs tr.grand td{font:700 15px/1.2 var(--body);background:var(--sun-soft);border-top:2px solid var(--red)}
+    table.fs tr.grand.neg td.num{color:var(--bad)}table.fs tr.grand.pos td.num{color:var(--ok)}
+    .je-table{margin:12px 0}.je-table input,.je-table select{width:100%}
+    .je-diff{font-weight:600;font-size:12px}.je-diff.okc{color:var(--ok)}.je-diff.badc{color:var(--bad)}
+    .je-block{border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:10px}
+    .je-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+    .je-memo{color:var(--mute);font-size:13px}
+    .je-block table{table-layout:fixed;width:100%}.je-block td.num{width:140px;text-align:right}
+    .je-block td.indent{padding-left:28px}
+    .inline-filter{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute)}
+    .inline-filter select{min-height:34px}
+    .ps-head{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:14px}
+    .ps-head .lbl{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute)}
+    .ps-head small{display:block;color:var(--mute)}
+    .ps-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:800px){.ps-cols{grid-template-columns:1fr}}
+    .payslip{border:2px solid var(--sun)}
+    .login-card{max-width:400px;margin:60px auto;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px;box-shadow:var(--sh)}
+    .login-card h2{font:600 22px var(--display);margin:0 0 6px;color:var(--red)}
+    .login-card p{color:var(--mute);margin:0 0 16px}
+    .login-card .field{margin-bottom:12px}
+    @media print{.sidebar,.topbar,.panel:not(.payslip){display:none!important}}
+
+    /* ========== ADD-ON: LIGHT / DARK THEME (shares the website's "jb.theme" setting) ========== */
+    .themebtn{display:inline-grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:var(--line-soft);color:var(--ink);cursor:pointer;transition:background .15s,transform .15s}
+    .themebtn:hover{background:var(--line);transform:translateY(-1px)}
+    .themebtn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+    .themebtn .theme-moon{fill:currentColor;stroke:none}
+    .themebtn .theme-sun{display:none}.themebtn .theme-moon{display:block}
+:root[data-theme=dark]{--bg:#160A09;--panel:#241312;--ink:#FFF1E2;--mute:#CDB1A6;--line:#3E2521;--line-soft:#2F1B18;--sun-soft:#30260F;--ok:#4CC38A;--ok-bg:#12352A;--bad:#FF7A70;--bad-bg:#3B1713;--warn:#F5B454;--warn-bg:#3A2A0C;--info:#8AAEFF;--info-bg:#15264A;color-scheme:dark;}
+:root[data-theme=dark] .topbar{background:rgba(36,19,18,.92)}
+:root[data-theme=dark] input,:root[data-theme=dark] select,:root[data-theme=dark] textarea{background:#2A1816}
+:root[data-theme=dark] input:focus,:root[data-theme=dark] select:focus,:root[data-theme=dark] textarea:focus{background:#321D1A}
+:root[data-theme=dark] .panel-h{background:var(--panel)}
+:root[data-theme=dark] th{background:#2A1816}
+:root[data-theme=dark] tbody tr:hover td{background:rgba(255,255,255,.04)}
+:root[data-theme=dark] .cfg{background:var(--sun-soft);border-color:#5a4617;color:#F5D58A}
+:root[data-theme=dark] .cfg code{background:rgba(255,255,255,.1)}
+:root[data-theme=dark] .topbar h1,:root[data-theme=dark] .note-card h3,:root[data-theme=dark] .company-hero .eyebrow,:root[data-theme=dark] .login-card h2,:root[data-theme=dark] .lnk,:root[data-theme=dark] .btn.ghost,:root[data-theme=dark] .cycle-title{color:#FF8A8F}
+:root[data-theme=dark] .btn.ghost{box-shadow:inset 0 0 0 1.5px #FF8A8F}
+:root[data-theme=dark] .login-card{background:var(--panel)}
+:root[data-theme=dark] .badge.src,:root[data-theme=dark] .badge.type{background:rgba(255,255,255,.1);color:#FFD27A}
+:root[data-theme=dark] .themebtn .theme-sun{display:block}
+:root[data-theme=dark] .themebtn .theme-moon{display:none}
+    @media (prefers-color-scheme: dark){
+:root:not([data-theme=light]){--bg:#160A09;--panel:#241312;--ink:#FFF1E2;--mute:#CDB1A6;--line:#3E2521;--line-soft:#2F1B18;--sun-soft:#30260F;--ok:#4CC38A;--ok-bg:#12352A;--bad:#FF7A70;--bad-bg:#3B1713;--warn:#F5B454;--warn-bg:#3A2A0C;--info:#8AAEFF;--info-bg:#15264A;color-scheme:dark;}
+:root:not([data-theme=light]) .topbar{background:rgba(36,19,18,.92)}
+:root:not([data-theme=light]) input,:root:not([data-theme=light]) select,:root:not([data-theme=light]) textarea{background:#2A1816}
+:root:not([data-theme=light]) input:focus,:root:not([data-theme=light]) select:focus,:root:not([data-theme=light]) textarea:focus{background:#321D1A}
+:root:not([data-theme=light]) .panel-h{background:var(--panel)}
+:root:not([data-theme=light]) th{background:#2A1816}
+:root:not([data-theme=light]) tbody tr:hover td{background:rgba(255,255,255,.04)}
+:root:not([data-theme=light]) .cfg{background:var(--sun-soft);border-color:#5a4617;color:#F5D58A}
+:root:not([data-theme=light]) .cfg code{background:rgba(255,255,255,.1)}
+:root:not([data-theme=light]) .topbar h1,:root:not([data-theme=light]) .note-card h3,:root:not([data-theme=light]) .company-hero .eyebrow,:root:not([data-theme=light]) .login-card h2,:root:not([data-theme=light]) .lnk,:root:not([data-theme=light]) .btn.ghost,:root:not([data-theme=light]) .cycle-title{color:#FF8A8F}
+:root:not([data-theme=light]) .btn.ghost{box-shadow:inset 0 0 0 1.5px #FF8A8F}
+:root:not([data-theme=light]) .login-card{background:var(--panel)}
+:root:not([data-theme=light]) .badge.src,:root:not([data-theme=light]) .badge.type{background:rgba(255,255,255,.1);color:#FFD27A}
+:root:not([data-theme=light]) .themebtn .theme-sun{display:block}
+:root:not([data-theme=light]) .themebtn .theme-moon{display:none}
+    }
   </style>
 
+  <meta name="color-scheme" content="light dark">
+  <script>
+    (function () { try { var t = localStorage.getItem("jb.theme"); if (t === "dark" || t === "light") document.documentElement.setAttribute("data-theme", t); } catch (e) {} })();
+  </script>
 </head>
 <body>
 
@@ -661,13 +757,23 @@
     <span class="val">Chickenjoy, Jolly Spaghetti, Yumburger, fries, rice meals, beverages, desserts · dine-in, take-out, delivery</span>
   </div>
   <nav class="side-nav" id="nav">
-    <a href="#/" data-route="/"><span class="ico">▣</span> Dashboard</a>
-    <a href="#/ordering" data-route="/ordering"><span class="ico">📦</span> Ordering to Supplier</a>
-    <a href="#/supplier-payments" data-route="/supplier-payments"><span class="ico">💳</span> Payment to Supplier</a>
-    <a href="#/sales" data-route="/sales"><span class="ico">🛒</span> Sales from Customer</a>
-    <a href="#/customer-payments" data-route="/customer-payments"><span class="ico">💵</span> Payment from Customer</a>
-    <a href="#/inventory" data-route="/inventory"><span class="ico">📋</span> Inventory</a>
-    <a href="#/company" data-route="/company"><span class="ico">🏢</span> Company Info</a>
+    <a href="#/" data-route="/">Dashboard</a>
+    <a href="#/ordering" data-route="/ordering">Ordering to Supplier</a>
+    <a href="#/supplier-payments" data-route="/supplier-payments">Payment to Supplier</a>
+    <a href="#/sales" data-route="/sales">Sales from Customer</a>
+    <a href="#/customer-payments" data-route="/customer-payments">Payment from Customer</a>
+    <a href="#/inventory" data-route="/inventory">Inventory</a>
+    <div class="nav-group g-hr">Human resource cycle</div>
+    <a href="#/employees" data-route="/employees">Employees</a>
+    <a href="#/attendance" data-route="/attendance">Attendance</a>
+    <a href="#/payroll" data-route="/payroll">Payroll</a>
+    <div class="nav-group g-ac">Accounting cycle</div>
+    <a href="#/accounts" data-route="/accounts">Chart of Accounts</a>
+    <a href="#/journal" data-route="/journal">Journal Entries</a>
+    <a href="#/ledger" data-route="/ledger">Ledger &amp; Trial Balance</a>
+    <a href="#/statements" data-route="/statements">Financial Statements</a>
+    <a href="#/overview" data-route="/overview">Cycle Overview</a>
+    <a href="#/company" data-route="/company">Company Info</a>
   </nav>
   <a class="side-back" href="index.html">← Back to website</a>
   <div class="side-foot">
@@ -683,6 +789,10 @@
       <div class="meta" id="page-meta">Operations overview</div>
     </div>
     <div style="display:flex;align-items:center;gap:12px">
+      <button class="themebtn" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
       <a class="topbar-back" href="index.html">← Website</a>
       <div class="meta" id="clock"></div>
     </div>
@@ -1494,6 +1604,865 @@ setInterval(() => {
   const el = $("#clock");
   if (el) el.textContent = new Date().toLocaleString("en-PH", { dateStyle: "medium", timeStyle: "short" });
 }, 1000);
+</script>
+
+<script>
+/* =========================================================================
+   ADD-ON: Human Resource + Accounting cycles
+   Everything above this script block is the original system and is unchanged.
+   This block only ADDS pages (Employees, Attendance, Payroll, Chart of
+   Accounts, Journal, Ledger & Trial Balance, Financial Statements and a
+   Cycle Overview) and registers them in the existing router.
+
+   Accounting entries for sales, purchases, supplier payments and payroll are
+   DERIVED from the existing tables each time a page opens, so the existing
+   pages do not need to change and nothing can be posted twice.
+   Run ops-hr-accounting.sql in Supabase first.
+   ========================================================================= */
+(function () {
+"use strict";
+
+/* ---------- small helpers ---------- */
+const n2 = v => Number(v || 0);
+const round2 = v => Math.round((Number(v) + Number.EPSILON) * 100) / 100;
+const pad = n => String(n).padStart(2, "0");
+const iso = d => { const x = new Date(d); return `${x.getFullYear()}-${pad(x.getMonth() + 1)}-${pad(x.getDate())}`; };
+const todayISO = () => iso(new Date());
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const fmtDay = d => d ? new Date(String(d).length === 10 ? d + "T00:00:00" : d).toLocaleDateString("en-PH", { dateStyle: "medium" }) : "—";
+const fmtTime = t => { if (!t) return "—"; const [h, m] = String(t).split(":"); const hh = Number(h); return `${hh % 12 || 12}:${m} ${hh >= 12 ? "PM" : "AM"}`; };
+const banner = () => configBanner();
+const friendly = err => {
+  const m = (err && err.message) || "Something went wrong.";
+  if (/duplicate key|already exists/i.test(m)) return "That record already exists.";
+  if (/row-level security|permission denied/i.test(m)) return "No permission. Sign in with a staff account.";
+  if (/does not exist|schema cache/i.test(m)) return "Table not found. Run ops-hr-accounting.sql in the Supabase SQL Editor.";
+  return m;
+};
+function say(el, text, ok) { if (!el) return; el.className = "msg " + (ok === true ? "ok" : ok === false ? "bad" : ""); el.textContent = text; }
+
+/* ---------- data access for the NEW tables (demo store when Supabase is off) ---------- */
+const X = { ops_employees: [], ops_attendance: [], ops_payroll: [], ops_accounts: [], ops_journal_entries: [], ops_journal_lines: [] };
+window.__OPS_X = X;
+
+async function xList(table, order, asc) {
+  if (!sb) {
+    const rows = X[table].map(r => ({ ...r }));
+    if (order) rows.sort((a, b) => { const p = a[order] ?? "", q = b[order] ?? ""; return (p < q ? -1 : p > q ? 1 : 0) * (asc ? 1 : -1); });
+    return rows;
+  }
+  let q = sb.from(table).select("*");
+  if (order) q = q.order(order, { ascending: !!asc });
+  const { data, error } = await q;
+  if (error) throw error;
+  return data || [];
+}
+function demoRow(table, row) {
+  const r = { ...row };
+  r.id = r.id || Math.random().toString(36).slice(2) + Date.now().toString(36);
+  r.created_at = r.created_at || new Date().toISOString();
+  const rows = X[table];
+  const dup = (table === "ops_attendance" && rows.some(x => x.employee_id === r.employee_id && x.work_date === r.work_date)) ||
+    (table === "ops_payroll" && rows.some(x => x.employee_id === r.employee_id && x.period_start === r.period_start && x.period_end === r.period_end)) ||
+    (table === "ops_accounts" && rows.some(x => x.code === r.code)) ||
+    (table === "ops_employees" && rows.some(x => x.emp_code === r.emp_code));
+  if (dup) throw new Error("duplicate key value violates unique constraint");
+  rows.unshift(r);
+  return r;
+}
+async function xInsert(table, row) {
+  if (!sb) return demoRow(table, row);
+  const { data, error } = await sb.from(table).insert(row).select().single();
+  if (error) throw error;
+  return data;
+}
+async function xInsertMany(table, rows) {
+  if (!rows.length) return [];
+  if (!sb) return rows.map(r => demoRow(table, r));
+  const { data, error } = await sb.from(table).insert(rows).select();
+  if (error) throw error;
+  return data || [];
+}
+async function xUpdate(table, id, patch) {
+  if (!sb) { const i = X[table].findIndex(x => x.id === id); if (i >= 0) X[table][i] = { ...X[table][i], ...patch }; return; }
+  const { error } = await sb.from(table).update(patch).eq("id", id);
+  if (error) throw error;
+}
+
+/* ---------- staff sign-in (only for the new HR / accounting pages) ---------- */
+async function staffSession() {
+  if (!sb) return true;
+  try { const { data } = await sb.auth.getSession(); return !!(data.session && !data.session.user.is_anonymous); }
+  catch (_) { return false; }
+}
+function loginHtml() {
+  return `<div class="login-card">
+    <h2>Staff sign-in</h2>
+    <p>Payroll, attendance and ledger data are restricted. Sign in with your staff account to continue.</p>
+    <form id="lg-form">
+      <label class="field">Email <input id="lg-email" type="email" required autocomplete="username"></label>
+      <label class="field">Password <input id="lg-pass" type="password" required autocomplete="current-password"></label>
+      <div class="form-actions"><button class="btn" type="submit">Sign in</button><div class="msg" id="lg-msg"></div></div>
+    </form></div>`;
+}
+function wireLogin() {
+  const f = $("#lg-form"); if (!f) return;
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const { error } = await sb.auth.signInWithPassword({ email: $("#lg-email").value.trim(), password: $("#lg-pass").value });
+    if (error) return say($("#lg-msg"), error.message, false);
+    render();
+  };
+}
+function guard(fn) {
+  return async () => {
+    if (!(await staffSession())) { setTimeout(wireLogin, 0); return loginHtml(); }
+    try {
+      const page = await fn();
+      if (page.mount) setTimeout(page.mount, 0);
+      return page.html;
+    } catch (e) {
+      return banner() + `<p class="msg bad">${esc(friendly(e))}</p>`;
+    }
+  };
+}
+
+/* =========================================================
+   ACCOUNTING ENGINE
+   ========================================================= */
+const VAT_RATE = 0.12, COGS_RATE = 0.35;
+
+/* manual / opening entries are stored; everything else is derived */
+async function postJE({ source, ref, memo, date, lines }) {
+  const clean = lines.map(l => ({ acct: l.acct, debit: round2(l.debit || 0), credit: round2(l.credit || 0) })).filter(l => l.debit || l.credit);
+  const dr = round2(clean.reduce((a, l) => a + l.debit, 0)), cr = round2(clean.reduce((a, l) => a + l.credit, 0));
+  if (!clean.length || Math.abs(dr - cr) > 0.005) throw new Error(`Journal entry is not balanced (debits ${peso(dr)} vs credits ${peso(cr)}).`);
+  const e = await xInsert("ops_journal_entries", { je_code: code("JE"), entry_date: date || todayISO(), memo, source, ref_code: ref || null });
+  await xInsertMany("ops_journal_lines", clean.map(l => ({ entry_id: e.id, account_code: l.acct, debit: l.debit, credit: l.credit })));
+  return e;
+}
+
+/* Build the automatic entries from the existing operational tables */
+async function derivedEntries() {
+  const [sales, cpays, pos, spays] = await Promise.all([
+    apiList("ops_sales"), apiList("ops_customer_payments"), apiList("ops_purchase_orders"), apiList("ops_supplier_payments")
+  ]);
+  const payroll = await xList("ops_payroll", "created_at");
+  const out = [];
+  const ent = (id, date, memo, source, lines) => out.push({
+    id, je_code: "AUTO-" + String(id).slice(1, 7).toUpperCase(), entry_date: String(date || todayISO()).slice(0, 10), memo, source, auto: true,
+    lines: lines.filter(l => l.debit || l.credit).map(l => ({ entry_id: id, account_code: l.a, debit: round2(l.debit || 0), credit: round2(l.credit || 0) }))
+  });
+  cpays.filter(p => p.status === "Completed").forEach(p => {
+    const sale = sales.find(s => s.id === p.sale_id);
+    const amt = n2(p.amount), net = round2(amt / (1 + VAT_RATE)), vat = round2(amt - net), cogs = round2(net * COGS_RATE);
+    ent("S" + p.id, p.created_at, `Sale ${(sale || {}).sale_code || ""} collected (${p.payment_code})`, "SALE",
+      [{ a: "1000", debit: amt }, { a: "4000", credit: net }, { a: "2100", credit: vat }, { a: "5000", debit: cogs }, { a: "1200", credit: cogs }]);
+  });
+  pos.filter(p => p.status === "Received").forEach(p => {
+    const t = round2(n2(p.total) || n2(p.quantity) * n2(p.unit_cost));
+    ent("P" + p.id, p.updated_at || p.created_at, `Received ${p.quantity} ${p.item_name} (${p.po_code})`, "PURCHASE", [{ a: "1200", debit: t }, { a: "2000", credit: t }]);
+  });
+  spays.filter(p => p.status === "Paid").forEach(p => {
+    const linked = !!p.purchase_order_id && pos.some(x => x.id === p.purchase_order_id);
+    ent("I" + p.id, p.paid_at || p.created_at, `${linked ? "Paid supplier invoice" : "Direct purchase paid"} ${p.invoice_code}`, "SUPPLIER_PAYMENT",
+      linked ? [{ a: "2000", debit: n2(p.amount) }, { a: "1000", credit: n2(p.amount) }] : [{ a: "1200", debit: n2(p.amount) }, { a: "1000", credit: n2(p.amount) }]);
+  });
+  payroll.filter(p => p.status === "Paid").forEach(p => {
+    const withheld = round2(n2(p.gross_pay) - n2(p.net_pay));
+    ent("R" + p.id, p.paid_at || p.created_at, `Payroll ${p.payslip_code}`, "PAYROLL",
+      [{ a: "5100", debit: n2(p.gross_pay) }, { a: "1000", credit: n2(p.net_pay) }, { a: "2200", credit: withheld }]);
+  });
+  return out;
+}
+
+async function loadLedger() {
+  const [accounts, mEntries, mLines, auto] = await Promise.all([
+    xList("ops_accounts", "code", true), xList("ops_journal_entries", "created_at"), xList("ops_journal_lines"), derivedEntries()
+  ]);
+  const manual = mEntries.map(e => ({ ...e, auto: false, lines: mLines.filter(l => l.entry_id === e.id) }));
+  const entries = [...manual, ...auto].sort((a, b) => (b.entry_date || "").localeCompare(a.entry_date || "") || String(b.je_code).localeCompare(String(a.je_code)));
+  const lines = [];
+  entries.forEach(e => e.lines.forEach(l => lines.push({ ...l, entry_id: e.id })));
+  const bal = {};
+  accounts.forEach(a => { bal[a.code] = { ...a, debit: 0, credit: 0, net: 0 }; });
+  lines.forEach(l => { const b = bal[l.account_code]; if (b) { b.debit += n2(l.debit); b.credit += n2(l.credit); } });
+  Object.values(bal).forEach(b => {
+    b.debit = round2(b.debit); b.credit = round2(b.credit);
+    b.net = round2(b.type === "Asset" || b.type === "Expense" ? b.debit - b.credit : b.credit - b.debit);
+  });
+  return { accounts, entries, lines, bal };
+}
+
+function statements(L) {
+  const list = Object.values(L.bal).sort((a, b) => a.code.localeCompare(b.code));
+  const of = t => list.filter(a => a.type === t);
+  const sum = arr => round2(arr.reduce((a, x) => a + x.net, 0));
+  const revenue = of("Revenue"), cogs = of("Expense").filter(a => a.code === "5000"), opex = of("Expense").filter(a => a.code !== "5000");
+  const totalRevenue = sum(revenue), totalCogs = sum(cogs), grossProfit = round2(totalRevenue - totalCogs), totalOpex = sum(opex);
+  const netIncome = round2(grossProfit - totalOpex);
+  const assets = of("Asset"), liabilities = of("Liability"), equity = of("Equity");
+  const totalAssets = sum(assets), totalLiab = sum(liabilities), totalEquity = round2(sum(equity) + netIncome);
+  return { revenue, cogs, opex, totalRevenue, totalCogs, grossProfit, totalOpex, netIncome, assets, liabilities, equity,
+    totalAssets, totalLiab, totalEquity, balanced: Math.abs(totalAssets - (totalLiab + totalEquity)) < 0.01 };
+}
+
+/* ---------- payroll + attendance rules (simplified, academic) ---------- */
+function computePay(emp, atts, periodDays) {
+  const days = atts.filter(a => a.status === "Present" || a.status === "Late" || a.status === "Leave").length;
+  const ot = round2(atts.reduce((a, x) => a + n2(x.ot_hours), 0));
+  const basic = round2(days * n2(emp.daily_rate));
+  const otPay = round2(ot * (n2(emp.daily_rate) / 8) * 1.25);
+  const gross = round2(basic + otPay);
+  const sss = round2(Math.min(gross * 0.045, 1350)), philhealth = round2(Math.min(gross * 0.025, 2500)), pagibig = round2(Math.min(gross * 0.02, 200));
+  const taxable = gross - sss - philhealth - pagibig;
+  const tax = round2(Math.max(0, taxable - 20833 * (periodDays / 30)) * 0.15);
+  return { days, ot, basic, otPay, gross, sss, philhealth, pagibig, tax, net: round2(gross - sss - philhealth - pagibig - tax) };
+}
+function attendanceHours(tin, tout) {
+  if (!tin || !tout) return { hours: 0, ot: 0 };
+  const [h1, m1] = tin.split(":").map(Number), [h2, m2] = tout.split(":").map(Number);
+  const mins = Math.max(0, (h2 * 60 + m2) - (h1 * 60 + m1) - 60);
+  const hours = round2(mins / 60);
+  return { hours, ot: round2(Math.max(0, hours - 8)) };
+}
+
+const statTile = (label, value, cls = "") => `<div class="stat ${cls}"><label>${esc(label)}</label><b>${value}</b></div>`;
+
+/* ---------------- Employees ---------------- */
+async function pageEmployees() {
+  const rows = await xList("ops_employees", "emp_code", true);
+  const active = rows.filter(r => r.status === "Active");
+  const payroll = active.reduce((a, r) => a + n2(r.daily_rate), 0);
+  const nextCode = "EMP-" + String(rows.length + 1).padStart(3, "0");
+  return {
+    html: banner() + `
+    <div class="panel">
+      <div class="panel-h"><h2>Add employee</h2></div>
+      <div class="panel-b">
+        <form id="emp-form">
+          <div class="form-grid">
+            <label class="field">Employee code <input id="emp-code" required value="${nextCode}"></label>
+            <label class="field">Full name <input id="emp-name" required placeholder="e.g. Maria Santos"></label>
+            <label class="field">Position <input id="emp-pos" required placeholder="e.g. Cashier"></label>
+            <label class="field">Department
+              <select id="emp-dept"><option>Counter</option><option>Kitchen</option><option>Delivery</option><option>Management</option><option>Back Office</option></select></label>
+            <label class="field">Daily rate (₱) <input id="emp-rate" type="number" min="0" step="0.01" required value="645"></label>
+            <label class="field">Contact <input id="emp-contact" placeholder="09xx-xxx-xxxx"></label>
+            <label class="field">Hire date <input id="emp-hire" type="date" required value="${todayISO()}"></label>
+          </div>
+          <div class="form-actions"><button class="btn" type="submit">Add employee</button><div class="msg" id="emp-msg"></div></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Employee master file</h2><span class="meta">${active.length} active · combined daily rate ${peso(payroll)} · click status to activate / deactivate</span></div>
+      <div class="panel-b" style="overflow-x:auto">
+        ${rows.length ? `
+          <table>
+            <thead><tr><th>Code</th><th>Name</th><th>Position</th><th>Department</th><th class="num">Daily rate</th><th>Hired</th><th>Status</th></tr></thead>
+            <tbody>${rows.map(r => `<tr>
+              <td><strong>${esc(r.emp_code)}</strong></td><td>${esc(r.full_name)}</td><td>${esc(r.position)}</td><td>${esc(r.department)}</td>
+              <td class="num">${peso(r.daily_rate)}</td><td>${fmtDay(r.hire_date)}</td>
+              <td><span class="badge ${esc(r.status)}" data-emp-toggle="${esc(r.status)}" data-id="${esc(r.id)}">${esc(r.status)}</span></td></tr>`).join("")}
+            </tbody>
+          </table>` : `<p class="empty">No employees yet.</p>`}
+      </div>
+    </div>`,
+    mount() {
+      $("#emp-form").onsubmit = async e => {
+        e.preventDefault();
+        try {
+          await xInsert("ops_employees", {
+            emp_code: $("#emp-code").value.trim(), full_name: $("#emp-name").value.trim(), position: $("#emp-pos").value.trim(),
+            department: $("#emp-dept").value, daily_rate: Number($("#emp-rate").value),
+            contact: $("#emp-contact").value.trim() || null, hire_date: $("#emp-hire").value, status: "Active"
+          });
+          await render(); say($("#emp-msg"), "Employee added.", true);
+        } catch (err) { say($("#emp-msg"), friendly(err), false); }
+      };
+      $$("[data-emp-toggle]").forEach(b => {
+        b.onclick = async () => {
+          try {
+            await xUpdate("ops_employees", b.dataset.id, { status: b.dataset.empToggle === "Active" ? "Inactive" : "Active" });
+            await render();
+          } catch (err) { alert(friendly(err)); }
+        };
+      });
+    }
+  };
+}
+
+/* ---------------- Attendance ---------------- */
+async function pageAttendance() {
+  const [emps, atts] = await Promise.all([xList("ops_employees", "emp_code", true), xList("ops_attendance", "work_date")]);
+  const active = emps.filter(e => e.status === "Active");
+  const name = id => (emps.find(e => e.id === id) || {}).full_name || id;
+  const today = todayISO();
+  const todays = atts.filter(a => a.work_date === today);
+  const present = todays.filter(a => a.status === "Present" || a.status === "Late").length;
+  const late = todays.filter(a => a.status === "Late").length;
+  const week = atts.filter(a => a.work_date >= iso(addDays(new Date(), -6)) && a.work_date <= today);
+  const weekHours = round2(week.reduce((a, x) => a + n2(x.hours_worked), 0));
+  const weekOT = round2(week.reduce((a, x) => a + n2(x.ot_hours), 0));
+  const recent = atts.slice(0, 25);
+
+  return {
+    html: banner() + `
+    <div class="grid">
+      ${statTile("Present today", `${present} / ${active.length}`, present ? "ok" : "")}
+      ${statTile("Late today", late, late ? "warn" : "")}
+      ${statTile("Hours worked (7 days)", weekHours)}
+      ${statTile("Overtime hours (7 days)", weekOT, weekOT ? "warn" : "")}
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Log attendance</h2><span class="meta">Hours = time out − time in − 1 hour break · over 8 hours counts as overtime</span></div>
+      <div class="panel-b">
+        <form id="att-form">
+          <div class="form-grid">
+            <label class="field">Employee <select id="att-emp" required>${active.map(e => `<option value="${esc(e.id)}">${esc(e.emp_code)} · ${esc(e.full_name)}</option>`).join("")}</select></label>
+            <label class="field">Date <input id="att-date" type="date" required value="${today}"></label>
+            <label class="field">Status <select id="att-status"><option>Present</option><option>Late</option><option>Absent</option><option>Leave</option></select></label>
+            <label class="field">Time in <input id="att-in" type="time" value="08:00"></label>
+            <label class="field">Time out <input id="att-out" type="time" value="17:00"></label>
+          </div>
+          <div class="form-actions"><button class="btn" type="submit">Save attendance</button><div class="msg" id="att-msg"></div></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Daily time record</h2><span class="meta">Latest 25 entries</span></div>
+      <div class="panel-b" style="overflow-x:auto">
+        ${recent.length ? `
+          <table>
+            <thead><tr><th>Date</th><th>Employee</th><th>Time in</th><th>Time out</th><th class="num">Hours</th><th class="num">OT</th><th>Status</th></tr></thead>
+            <tbody>${recent.map(a => `<tr>
+              <td>${fmtDay(a.work_date)}</td><td>${esc(name(a.employee_id))}</td><td>${fmtTime(a.time_in)}</td><td>${fmtTime(a.time_out)}</td>
+              <td class="num">${esc(a.hours_worked)}</td><td class="num">${esc(a.ot_hours)}</td>
+              <td><span class="badge ${esc(a.status)} static">${esc(a.status)}</span></td></tr>`).join("")}
+            </tbody>
+          </table>` : `<p class="empty">No attendance records yet.</p>`}
+      </div>
+    </div>`,
+    mount() {
+      const st = $("#att-status");
+      st.onchange = () => {
+        const off = st.value === "Absent" || st.value === "Leave";
+        $("#att-in").disabled = off; $("#att-out").disabled = off;
+      };
+      $("#att-form").onsubmit = async e => {
+        e.preventDefault();
+        const off = st.value === "Absent" || st.value === "Leave";
+        const tin = off ? null : $("#att-in").value, tout = off ? null : $("#att-out").value;
+        const h = off ? { hours: 0, ot: 0 } : attendanceHours(tin, tout);
+        try {
+          if (!off && (!tin || !tout)) throw new Error("Enter both time in and time out.");
+          await xInsert("ops_attendance", {
+            employee_id: $("#att-emp").value, work_date: $("#att-date").value, time_in: tin, time_out: tout,
+            hours_worked: h.hours, ot_hours: h.ot, status: st.value
+          });
+          await render(); say($("#att-msg"), "Attendance saved.", true);
+        } catch (err) { say($("#att-msg"), /already exists/.test(friendly(err)) ? "Attendance for that employee and date already exists." : friendly(err), false); }
+      };
+    }
+  };
+}
+
+/* ---------------- Payroll ---------------- */
+let PAY_START = iso(addDays(new Date(), -14));
+let PAY_END = iso(addDays(new Date(), -1));
+let PAY_VIEW = null;
+
+async function pagePayroll() {
+  const [emps, rows] = await Promise.all([xList("ops_employees", "emp_code", true), xList("ops_payroll", "period_end")]);
+  const ename = id => (emps.find(e => e.id === id) || {}).full_name || id;
+  const draft = rows.filter(r => r.status === "Draft");
+  const paid = rows.filter(r => r.status === "Paid");
+  const sum = (arr, k) => round2(arr.reduce((a, r) => a + n2(r[k]), 0));
+  const view = rows.find(r => r.id === PAY_VIEW);
+  const emp = view ? emps.find(e => e.id === view.employee_id) : null;
+
+  const payslip = view ? `
+    <div class="panel payslip">
+      <div class="panel-h"><h2>Payslip · ${esc(view.payslip_code)}</h2>
+        <div><button class="btn ghost sm" type="button" id="ps-print">Print</button> <button class="btn ghost sm" type="button" id="ps-close">Close</button></div></div>
+      <div class="panel-b">
+        <div class="ps-head">
+          <div><span class="lbl">Employee</span><strong>${esc(ename(view.employee_id))}</strong><small>${esc(emp ? emp.position : "")} · ${esc(emp ? emp.emp_code : "")}</small></div>
+          <div><span class="lbl">Pay period</span><strong>${fmtDay(view.period_start)} – ${fmtDay(view.period_end)}</strong><small>${esc(view.days_present)} days · ${esc(view.ot_hours)} OT hrs</small></div>
+          <div><span class="lbl">Status</span><span class="badge ${esc(view.status)} static">${esc(view.status)}</span></div>
+        </div>
+        <div class="ps-cols">
+          <table>
+            <thead><tr><th colspan="2">Earnings</th></tr></thead>
+            <tbody>
+              <tr><td>Basic pay (${esc(view.days_present)} days × ${peso(emp ? emp.daily_rate : 0)})</td><td class="num">${peso(view.basic_pay)}</td></tr>
+              <tr><td>Overtime (${esc(view.ot_hours)} hrs × 125%)</td><td class="num">${peso(view.ot_pay)}</td></tr>
+              <tr class="tot-row"><td>Gross pay</td><td class="num">${peso(view.gross_pay)}</td></tr>
+            </tbody>
+          </table>
+          <table>
+            <thead><tr><th colspan="2">Deductions</th></tr></thead>
+            <tbody>
+              <tr><td>SSS</td><td class="num">${peso(view.sss)}</td></tr>
+              <tr><td>PhilHealth</td><td class="num">${peso(view.philhealth)}</td></tr>
+              <tr><td>Pag-IBIG</td><td class="num">${peso(view.pagibig)}</td></tr>
+              <tr><td>Withholding tax</td><td class="num">${peso(view.tax)}</td></tr>
+              <tr class="tot-row"><td>Net pay</td><td class="num">${peso(view.net_pay)}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>` : "";
+
+  return {
+    html: banner() + `
+    <div class="grid">
+      ${statTile("Payslips awaiting payment", draft.length, draft.length ? "warn" : "")}
+      ${statTile("Net pay awaiting payment", peso(sum(draft, "net_pay")), draft.length ? "warn" : "")}
+      ${statTile("Gross salaries paid", peso(sum(paid, "gross_pay")), "ok")}
+      ${statTile("Contributions and tax withheld", peso(sum(paid, "gross_pay") - sum(paid, "net_pay")))}
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Generate payroll</h2><span class="meta">Reads attendance for the period and computes pay for every active employee</span></div>
+      <div class="panel-b">
+        <form id="pay-form">
+          <div class="form-grid cols-3">
+            <label class="field">Period start <input id="pay-start" type="date" required value="${PAY_START}"></label>
+            <label class="field">Period end <input id="pay-end" type="date" required value="${PAY_END}"></label>
+          </div>
+          <div class="form-actions"><button class="btn" type="submit">Generate payroll</button><div class="msg" id="pay-msg"></div></div>
+          <p class="fine">Simplified for academic purposes: SSS 4.5% (max ₱1,350), PhilHealth 2.5% (max ₱2,500), Pag-IBIG 2% (max ₱200), 15% withholding tax on taxable pay above ₱20,833 per month (prorated), overtime at 125% of the hourly rate.</p>
+        </form>
+      </div>
+    </div>
+    ${payslip}
+    <div class="panel">
+      <div class="panel-h"><h2>Payslips</h2><span class="meta">Click a code to view the payslip · click Draft to pay (posts to the ledger)</span></div>
+      <div class="panel-b" style="overflow-x:auto">
+        ${rows.length ? `
+          <table>
+            <thead><tr><th>Payslip</th><th>Employee</th><th>Period</th><th class="num">Days</th><th class="num">OT hrs</th><th class="num">Gross</th><th class="num">Deductions</th><th class="num">Net</th><th>Status</th></tr></thead>
+            <tbody>${rows.map(r => `<tr>
+              <td><a href="#/payroll" class="lnk" data-ps="${esc(r.id)}"><strong>${esc(r.payslip_code)}</strong></a></td>
+              <td>${esc(ename(r.employee_id))}</td><td>${fmtDay(r.period_start)} – ${fmtDay(r.period_end)}</td>
+              <td class="num">${esc(r.days_present)}</td><td class="num">${esc(r.ot_hours)}</td><td class="num">${peso(r.gross_pay)}</td>
+              <td class="num">${peso(n2(r.gross_pay) - n2(r.net_pay))}</td><td class="num"><strong>${peso(r.net_pay)}</strong></td>
+              <td><span class="badge ${esc(r.status)} ${r.status === "Paid" ? "static" : ""}" data-pay="${esc(r.status)}" data-id="${esc(r.id)}">${esc(r.status)}</span></td></tr>`).join("")}
+            </tbody>
+          </table>` : `<div class="empty-box"><strong>No payslips yet</strong><p>Choose a period above and generate payroll.</p></div>`}
+      </div>
+    </div>`,
+    mount() {
+      $("#pay-form").onsubmit = async e => {
+        e.preventDefault();
+        PAY_START = $("#pay-start").value; PAY_END = $("#pay-end").value;
+        try {
+          if (PAY_END < PAY_START) throw new Error("Period end must be on or after period start.");
+          const periodDays = Math.round((new Date(PAY_END) - new Date(PAY_START)) / 86400000) + 1;
+          const atts = await xList("ops_attendance", "work_date");
+          let made = 0, skipped = 0;
+          for (const emp of emps.filter(x => x.status === "Active")) {
+            const mine = atts.filter(a => a.employee_id === emp.id && a.work_date >= PAY_START && a.work_date <= PAY_END);
+            if (!mine.length) { skipped++; continue; }
+            if (rows.some(r => r.employee_id === emp.id && r.period_start === PAY_START && r.period_end === PAY_END)) { skipped++; continue; }
+            const c = computePay(emp, mine, periodDays);
+            await xInsert("ops_payroll", {
+              payslip_code: code("PS"), employee_id: emp.id, period_start: PAY_START, period_end: PAY_END,
+              days_present: c.days, ot_hours: c.ot, basic_pay: c.basic, ot_pay: c.otPay, gross_pay: c.gross,
+              sss: c.sss, philhealth: c.philhealth, pagibig: c.pagibig, tax: c.tax, net_pay: c.net, status: "Draft"
+            });
+            made++;
+          }
+          await render();
+          say($("#pay-msg"), `${made} payslip${made === 1 ? "" : "s"} generated${skipped ? `, ${skipped} skipped (no attendance or already generated)` : ""}.`, made > 0);
+        } catch (err) { say($("#pay-msg"), friendly(err), false); }
+      };
+      $$("[data-ps]").forEach(a => { a.onclick = ev => { ev.preventDefault(); PAY_VIEW = a.dataset.ps; render(); }; });
+      const close = $("#ps-close"); if (close) close.onclick = () => { PAY_VIEW = null; render(); };
+      const pr = $("#ps-print"); if (pr) pr.onclick = () => window.print();
+      $$("[data-pay]").forEach(b => {
+        b.onclick = async () => {
+          if (b.dataset.pay === "Paid") return;
+          const p = rows.find(r => r.id === b.dataset.id);
+          try {
+            await xUpdate("ops_payroll", p.id, { status: "Paid", paid_at: new Date().toISOString() });
+                        await render(); say($("#pay-msg"), `${p.payslip_code} paid. Salaries expense posted to the ledger.`, true);
+          } catch (err) { alert(friendly(err)); }
+        };
+      });
+    }
+  };
+}
+
+/* ---------------- Chart of Accounts ---------------- */
+async function pageAccounts() {
+  const L = await loadLedger();
+  const list = Object.values(L.bal).sort((a, b) => a.code.localeCompare(b.code));
+  return {
+    html: banner() + `
+    <div class="panel">
+      <div class="panel-h"><h2>Add account</h2></div>
+      <div class="panel-b">
+        <form id="acc-form">
+          <div class="form-grid cols-3">
+            <label class="field">Account code <input id="acc-code" required pattern="[0-9]{4}" placeholder="e.g. 5400"></label>
+            <label class="field">Account name <input id="acc-name" required placeholder="e.g. Repairs and Maintenance"></label>
+            <label class="field">Type <select id="acc-type"><option>Asset</option><option>Liability</option><option>Equity</option><option>Revenue</option><option selected>Expense</option></select></label>
+          </div>
+          <div class="form-actions"><button class="btn" type="submit">Add account</button><div class="msg" id="acc-msg"></div></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Chart of accounts</h2><span class="meta">Assets and expenses increase with debits · liabilities, equity and revenue increase with credits</span></div>
+      <div class="panel-b" style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Code</th><th>Account</th><th>Type</th><th>Normal balance</th><th class="num">Balance</th></tr></thead>
+          <tbody>${list.map(a => `<tr>
+            <td><strong>${esc(a.code)}</strong></td><td>${esc(a.name)}</td>
+            <td><span class="badge type ${esc(a.type)} static">${esc(a.type)}</span></td>
+            <td>${a.type === "Asset" || a.type === "Expense" ? "Debit" : "Credit"}</td><td class="num">${peso(a.net)}</td></tr>`).join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>`,
+    mount() {
+      $("#acc-form").onsubmit = async e => {
+        e.preventDefault();
+        try {
+          await xInsert("ops_accounts", { code: $("#acc-code").value.trim(), name: $("#acc-name").value.trim(), type: $("#acc-type").value, active: true });
+          await render(); say($("#acc-msg"), "Account added.", true);
+        } catch (err) { say($("#acc-msg"), friendly(err), false); }
+      };
+    }
+  };
+}
+
+/* ---------------- Journal Entries ---------------- */
+let JE_FILTER = "ALL";
+
+async function pageJournal() {
+  const L = await loadLedger();
+  const accts = Object.values(L.bal).sort((a, b) => a.code.localeCompare(b.code));
+  const opts = `<option value="">Select account</option>` + accts.map(a => `<option value="${esc(a.code)}">${esc(a.code)} · ${esc(a.name)}</option>`).join("");
+  const shown = L.entries.filter(e => JE_FILTER === "ALL" || e.source === JE_FILTER).slice(0, 20);
+  const lineRow = () => `<tr class="je-line">
+      <td><select class="jl-acct">${opts}</select></td>
+      <td><input class="jl-dr" type="number" min="0" step="0.01" placeholder="0.00"></td>
+      <td><input class="jl-cr" type="number" min="0" step="0.01" placeholder="0.00"></td></tr>`;
+  const sources = ["ALL", "SALE", "PURCHASE", "SUPPLIER_PAYMENT", "PAYROLL", "MANUAL", "OPENING"];
+
+  return {
+    html: banner() + `
+    <div class="panel">
+      <div class="panel-h"><h2>Manual journal entry</h2><span class="meta">For items without a module, such as utilities or rent. Debits must equal credits.</span></div>
+      <div class="panel-b">
+        <form id="je-form">
+          <div class="form-grid">
+            <label class="field">Date <input id="je-date" type="date" required value="${todayISO()}"></label>
+            <label class="field">Memo <input id="je-memo" required placeholder="e.g. Electricity bill"></label>
+          </div>
+          <table class="je-table">
+            <thead><tr><th>Account</th><th>Debit (₱)</th><th>Credit (₱)</th></tr></thead>
+            <tbody id="je-lines">${lineRow()}${lineRow()}</tbody>
+            <tfoot><tr class="tot-row"><td>Totals <span id="je-diff" class="je-diff"></span></td><td class="num" id="je-dr">₱0.00</td><td class="num" id="je-cr">₱0.00</td></tr></tfoot>
+          </table>
+          <div class="form-actions"><button class="btn ghost" type="button" id="je-add">+ Add line</button><button class="btn" type="submit">Post entry</button><div class="msg" id="je-msg"></div></div>
+        </form>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Journal</h2><span class="meta">Latest 20 entries</span>
+        <label class="inline-filter">Source
+          <select id="je-filter">${sources.map(s => `<option value="${s}" ${s === JE_FILTER ? "selected" : ""}>${s === "ALL" ? "All sources" : s.replace("_", " ")}</option>`).join("")}</select></label></div>
+      <div class="panel-b">
+        ${shown.length ? shown.map(e => {
+          const ls = L.lines.filter(l => l.entry_id === e.id).sort((a, b) => n2(b.debit) - n2(a.debit));
+          return `<div class="je-block">
+            <div class="je-head"><div><strong>${esc(e.je_code)}</strong> · ${fmtDay(e.entry_date)}<div class="je-memo">${esc(e.memo)}</div></div>
+              <span class="badge src ${esc(e.source)} static">${esc(e.source.replace("_", " "))}</span></div>
+            <table><tbody>${ls.map(l => `<tr><td class="${n2(l.credit) ? "indent" : ""}">${esc(l.account_code)} · ${esc((L.bal[l.account_code] || {}).name || "")}</td>
+              <td class="num">${n2(l.debit) ? peso(l.debit) : ""}</td><td class="num">${n2(l.credit) ? peso(l.credit) : ""}</td></tr>`).join("")}</tbody></table>
+          </div>`;
+        }).join("") : `<p class="empty">No journal entries for this filter.</p>`}
+      </div>
+    </div>`,
+    mount() {
+      const recalc = () => {
+        let dr = 0, cr = 0;
+        $$(".jl-dr").forEach(i => dr += n2(i.value)); $$(".jl-cr").forEach(i => cr += n2(i.value));
+        $("#je-dr").textContent = peso(dr); $("#je-cr").textContent = peso(cr);
+        const d = round2(dr - cr);
+        const el = $("#je-diff");
+        el.textContent = dr || cr ? (d === 0 ? "· balanced" : `· difference ${peso(Math.abs(d))}`) : "";
+        el.className = "je-diff " + (d === 0 && (dr || cr) ? "okc" : "badc");
+      };
+      $("#je-form").addEventListener("input", recalc);
+      $("#je-add").onclick = () => { $("#je-lines").insertAdjacentHTML("beforeend", lineRow()); };
+      $("#je-filter").onchange = ev => { JE_FILTER = ev.target.value; render(); };
+      $("#je-form").onsubmit = async e => {
+        e.preventDefault();
+        const lines = $$(".je-line").map(tr => ({
+          acct: $(".jl-acct", tr).value, debit: n2($(".jl-dr", tr).value), credit: n2($(".jl-cr", tr).value)
+        })).filter(l => l.acct && (l.debit || l.credit));
+        try {
+          if (lines.length < 2) throw new Error("Enter at least two lines.");
+          if (lines.some(l => l.debit && l.credit)) throw new Error("A line cannot have both a debit and a credit.");
+          await postJE({ source: "MANUAL", ref: null, memo: $("#je-memo").value.trim(), date: $("#je-date").value, lines });
+          await render(); say($("#je-msg"), "Journal entry posted.", true);
+        } catch (err) { say($("#je-msg"), friendly(err), false); }
+      };
+    }
+  };
+}
+
+/* ---------------- Ledger & Trial Balance ---------------- */
+let LEDGER_ACCT = "1000";
+
+async function pageLedger() {
+  const L = await loadLedger();
+  const list = Object.values(L.bal).sort((a, b) => a.code.localeCompare(b.code));
+  const totDr = round2(list.reduce((a, b) => a + b.debit, 0));
+  const totCr = round2(list.reduce((a, b) => a + b.credit, 0));
+  const ok = Math.abs(totDr - totCr) < 0.01;
+  if (!L.bal[LEDGER_ACCT]) LEDGER_ACCT = list[0] ? list[0].code : "";
+  const acct = L.bal[LEDGER_ACCT];
+  const debitNormal = acct && (acct.type === "Asset" || acct.type === "Expense");
+  const rows = L.lines.filter(l => l.account_code === LEDGER_ACCT)
+    .map(l => ({ l, e: L.entries.find(x => x.id === l.entry_id) || {} }))
+    .sort((a, b) => (a.e.entry_date || "").localeCompare(b.e.entry_date || "") || (a.e.created_at || "").localeCompare(b.e.created_at || ""));
+  let run = 0;
+  const withRun = rows.map(r => { run = round2(run + (debitNormal ? n2(r.l.debit) - n2(r.l.credit) : n2(r.l.credit) - n2(r.l.debit))); return { ...r, run }; });
+
+  return {
+    html: banner() + `
+    <div class="panel">
+      <div class="panel-h"><h2>Trial balance</h2><span class="badge ${ok ? "ok" : "Reorder"} static">${ok ? "Balanced" : "Out of balance"}</span></div>
+      <div class="panel-b" style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Code</th><th>Account</th><th>Type</th><th class="num">Total debits</th><th class="num">Total credits</th><th class="num">Balance</th></tr></thead>
+          <tbody>${list.map(a => `<tr><td><strong>${esc(a.code)}</strong></td><td>${esc(a.name)}</td><td>${esc(a.type)}</td>
+            <td class="num">${peso(a.debit)}</td><td class="num">${peso(a.credit)}</td><td class="num">${peso(a.net)}</td></tr>`).join("")}</tbody>
+          <tfoot><tr class="tot-row"><td colspan="3">Totals</td><td class="num">${peso(totDr)}</td><td class="num">${peso(totCr)}</td><td></td></tr></tfoot>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>General ledger</h2><span class="meta">Latest 20 postings</span>
+        <label class="inline-filter">Account <select id="lg-acct">${list.map(a => `<option value="${esc(a.code)}" ${a.code === LEDGER_ACCT ? "selected" : ""}>${esc(a.code)} · ${esc(a.name)}</option>`).join("")}</select></label></div>
+      <div class="panel-b" style="overflow-x:auto">
+        ${withRun.length ? `
+          <table>
+            <thead><tr><th>Date</th><th>Entry</th><th>Memo</th><th class="num">Debit</th><th class="num">Credit</th><th class="num">Running balance</th></tr></thead>
+            <tbody>${withRun.slice(-20).map(({ l, e, run }) => `<tr><td>${fmtDay(e.entry_date)}</td><td>${esc(e.je_code || "")}</td><td>${esc(e.memo || "")}</td>
+              <td class="num">${n2(l.debit) ? peso(l.debit) : ""}</td><td class="num">${n2(l.credit) ? peso(l.credit) : ""}</td><td class="num"><strong>${peso(run)}</strong></td></tr>`).join("")}</tbody>
+          </table>` : `<p class="empty">No activity in this account yet.</p>`}
+      </div>
+    </div>`,
+    mount() { $("#lg-acct").onchange = ev => { LEDGER_ACCT = ev.target.value; render(); }; }
+  };
+}
+
+/* ---------------- Financial Statements ---------------- */
+async function pageStatements() {
+  const L = await loadLedger();
+  const S = statements(L);
+  const line = a => `<tr><td>${esc(a.code)} · ${esc(a.name)}</td><td class="num">${peso(a.net)}</td></tr>`;
+  const section = (title, arr) => arr.length ? `<tr class="sec"><td colspan="2">${title}</td></tr>${arr.map(line).join("")}` : "";
+  const margin = S.totalRevenue ? (S.netIncome / S.totalRevenue * 100).toFixed(1) : "0.0";
+  return {
+    html: banner() + `
+    <div class="grid">
+      ${statTile("Net sales", peso(S.totalRevenue), "ok")}
+      ${statTile("Gross profit", peso(S.grossProfit))}
+      ${statTile("Net income", peso(S.netIncome), S.netIncome >= 0 ? "ok" : "bad")}
+      ${statTile("Net margin", margin + "%")}
+    </div>
+    <div class="split">
+      <div class="panel">
+        <div class="panel-h"><h2>Income statement</h2><span class="meta">Cumulative to ${fmtDay(todayISO())}</span></div>
+        <div class="panel-b">
+          <table class="fs">
+            <tbody>
+              ${section("Revenue", S.revenue)}
+              <tr class="tot-row"><td>Total revenue</td><td class="num">${peso(S.totalRevenue)}</td></tr>
+              ${section("Cost of goods sold", S.cogs)}
+              <tr class="tot-row"><td>Gross profit</td><td class="num">${peso(S.grossProfit)}</td></tr>
+              ${section("Operating expenses", S.opex)}
+              <tr class="tot-row"><td>Total operating expenses</td><td class="num">${peso(S.totalOpex)}</td></tr>
+              <tr class="grand ${S.netIncome >= 0 ? "pos" : "neg"}"><td>Net income</td><td class="num">${peso(S.netIncome)}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><h2>Balance sheet</h2><span class="badge ${S.balanced ? "ok" : "Reorder"} static">${S.balanced ? "Assets = Liabilities + Equity" : "Out of balance"}</span></div>
+        <div class="panel-b">
+          <table class="fs">
+            <tbody>
+              ${section("Assets", S.assets)}
+              <tr class="tot-row"><td>Total assets</td><td class="num">${peso(S.totalAssets)}</td></tr>
+              ${section("Liabilities", S.liabilities)}
+              <tr class="tot-row"><td>Total liabilities</td><td class="num">${peso(S.totalLiab)}</td></tr>
+              ${section("Equity", S.equity)}
+              <tr><td>Current period earnings</td><td class="num">${peso(S.netIncome)}</td></tr>
+              <tr class="tot-row"><td>Total equity</td><td class="num">${peso(S.totalEquity)}</td></tr>
+              <tr class="grand"><td>Liabilities + equity</td><td class="num">${peso(round2(S.totalLiab + S.totalEquity))}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="fine">Cost of goods sold is estimated at ${Math.round(COGS_RATE * 100)}% of net sales (standard food cost). Prices are VAT-inclusive and output VAT of ${Math.round(VAT_RATE * 100)}% is recorded as a liability.</p>`
+  };
+}
+
+
+/* ---------------- Cycle Overview ---------------- */
+async function pageOverview() {
+  const [pos, pays, sales, inv, emps, atts, payroll, L] = await Promise.all([
+    apiList("ops_purchase_orders"), apiList("ops_supplier_payments"), apiList("ops_sales"),
+    apiList("ops_inventory", "updated_at"), xList("ops_employees", "emp_code", true),
+    xList("ops_attendance", "work_date"), xList("ops_payroll", "created_at"), loadLedger()
+  ]);
+  const S = statements(L), today = todayISO();
+  const total = s => n2(s.total) || n2(s.quantity) * n2(s.unit_price);
+  const paidSales = sales.filter(s => s.status === "Paid");
+  const owed = pays.filter(p => p.status === "Unpaid").reduce((a, p) => a + n2(p.amount), 0);
+  const reorder = inv.filter(i => n2(i.quantity) <= n2(i.reorder_level));
+  const active = emps.filter(e => e.status === "Active");
+  const presentToday = atts.filter(a => a.work_date === today && (a.status === "Present" || a.status === "Late")).length;
+  const draftNet = payroll.filter(p => p.status === "Draft").reduce((a, p) => a + n2(p.net_pay), 0);
+  const paidGross = payroll.filter(p => p.status === "Paid").reduce((a, p) => a + n2(p.gross_pay), 0);
+  const cash = (L.bal["1000"] || {}).net || 0;
+  const tbOk = Math.abs(Object.values(L.bal).reduce((a, b) => a + b.debit - b.credit, 0)) < 0.01;
+  const salesToday = paidSales.filter(s => String(s.created_at).slice(0, 10) === today).reduce((a, s) => a + total(s), 0);
+  const recent = L.entries.slice(0, 6).map(e => ({ e, amt: e.lines.reduce((a, l) => a + n2(l.debit), 0) }));
+  return {
+    html: banner() + `
+    <div class="cycle-title ex">Expenditure cycle</div>
+    <div class="grid">
+      ${statTile("Open purchase orders", pos.filter(p => p.status === "Pending" || p.status === "Sent").length)}
+      ${statTile("Owed to suppliers", peso(owed), owed ? "warn" : "")}
+      ${statTile("Items to reorder", reorder.length, reorder.length ? "bad" : "")}
+      ${statTile("Inventory value", peso(inv.reduce((a, i) => a + n2(i.quantity) * n2(i.unit_cost), 0)))}
+    </div>
+    <div class="cycle-title re">Revenue cycle</div>
+    <div class="grid">
+      ${statTile("Sales today (paid)", peso(salesToday), "ok")}
+      ${statTile("Open sales awaiting payment", sales.filter(s => s.status === "Open").length)}
+      ${statTile("Total paid sales", peso(paidSales.reduce((a, s) => a + total(s), 0)), "ok")}
+      ${statTile("Average ticket", peso(paidSales.length ? paidSales.reduce((a, s) => a + total(s), 0) / paidSales.length : 0))}
+    </div>
+    <div class="cycle-title hr">Human resource cycle</div>
+    <div class="grid">
+      ${statTile("Active employees", active.length)}
+      ${statTile("Present today", `${presentToday} / ${active.length}`)}
+      ${statTile("Payroll awaiting payment", peso(draftNet), draftNet ? "warn" : "")}
+      ${statTile("Salaries paid to date", peso(paidGross))}
+    </div>
+    <div class="cycle-title ac">Accounting cycle</div>
+    <div class="grid">
+      ${statTile("Cash balance", peso(cash), cash >= 0 ? "ok" : "bad")}
+      ${statTile("Net income to date", peso(S.netIncome), S.netIncome >= 0 ? "ok" : "bad")}
+      ${statTile("Journal entries", L.entries.length)}
+      ${statTile("Trial balance", tbOk ? "Balanced" : "Out of balance", tbOk ? "ok" : "bad")}
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Latest journal entries</h2></div>
+      <div class="panel-b">${recent.length ? `<table>
+        <thead><tr><th>Date</th><th>Memo</th><th>Source</th><th class="num">Amount</th></tr></thead>
+        <tbody>${recent.map(({ e, amt }) => `<tr><td>${fmtDay(e.entry_date)}</td><td>${esc(e.memo)}</td>
+          <td><span class="badge src ${esc(e.source)} static">${esc(e.source.replace("_", " "))}</span></td><td class="num">${peso(amt)}</td></tr>`).join("")}</tbody></table>`
+        : `<p class="empty">No journal entries yet.</p>`}</div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>How the four cycles connect</h2></div>
+      <div class="panel-b"><div class="note-grid four">
+        <div class="note-card"><h3>Expenditure → Accounting</h3><p>A purchase order marked Received is recorded as <em>Dr Inventory / Cr Accounts Payable</em>. A supplier invoice marked Paid is recorded as <em>Dr Accounts Payable / Cr Cash</em>.</p></div>
+        <div class="note-card"><h3>Revenue → Accounting</h3><p>Each completed customer payment is recorded as cash, sales net of 12% VAT, output VAT, and estimated cost of goods sold.</p></div>
+        <div class="note-card"><h3>HR → Accounting</h3><p>Attendance drives payroll. A payslip marked Paid is recorded as <em>Dr Salaries Expense / Cr Cash and Payroll Payable</em>.</p></div>
+        <div class="note-card"><h3>Accounting → Management</h3><p>The ledger feeds the trial balance, the income statement and the balance sheet.</p></div>
+      </div></div>
+    </div>`
+  };
+}
+
+
+/* ---------- sample data for the new pages (only when Supabase is not configured) ---------- */
+function seedDemoX() {
+  const T = new Date(), day = n => iso(addDays(T, -n));
+  let seed = 7; const rnd = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+  X.ops_accounts = [["1000","Cash on Hand and in Bank","Asset"],["1200","Inventory","Asset"],["2000","Accounts Payable","Liability"],
+    ["2100","Output VAT Payable","Liability"],["2200","Payroll Contributions and Tax Payable","Liability"],["3000","Owner's Capital","Equity"],
+    ["4000","Sales Revenue","Revenue"],["5000","Cost of Goods Sold","Expense"],["5100","Salaries and Wages Expense","Expense"],
+    ["5200","Utilities Expense","Expense"],["5300","Rent Expense","Expense"]].map(([code, name, type], i) => ({ id: "a" + i, code, name, type, active: true }));
+  X.ops_employees = [["e1","EMP-001","Maria Santos","Store Manager","Management",1100,"0917-210-0001","2023-02-01"],
+    ["e2","EMP-002","Juan Dela Cruz","Cashier","Counter",645,"0917-210-0002","2024-06-10"],["e3","EMP-003","Ana Reyes","Crew - Kitchen","Kitchen",645,"0917-210-0003","2024-08-15"],
+    ["e4","EMP-004","Pedro Garcia","Crew - Kitchen","Kitchen",645,"0917-210-0004","2025-01-20"],["e5","EMP-005","Liza Mendoza","Accountant","Back Office",900,"0917-210-0005","2023-09-05"],
+    ["e6","EMP-006","Carlo Ramos","Delivery Rider","Delivery",700,"0917-210-0006","2025-03-03"]]
+    .map(([id, emp_code, full_name, position, department, daily_rate, contact, hire_date]) => ({ id, emp_code, full_name, position, department, daily_rate, contact, hire_date, status: "Active", created_at: day(90) }));
+  for (let d = 30; d >= 0; d--) X.ops_employees.forEach((e, idx) => {
+    if ((d + idx) % 7 === 0) return;
+    const inMin = rnd() > 0.88 ? 500 + Math.floor(rnd() * 15) : 470 + Math.floor(rnd() * 20), outMin = 1020 + Math.floor(rnd() * 100);
+    const tin = `${pad(Math.floor(inMin / 60))}:${pad(inMin % 60)}`, tout = `${pad(Math.floor(outMin / 60))}:${pad(outMin % 60)}`, h = attendanceHours(tin, tout);
+    X.ops_attendance.push({ id: `att${d}_${idx}`, employee_id: e.id, work_date: day(d), time_in: tin, time_out: tout, hours_worked: h.hours, ot_hours: h.ot, status: inMin > 495 ? "Late" : "Present", created_at: day(d) });
+  });
+  const je = (id, date, memo, source, lines) => { X.ops_journal_entries.push({ id, je_code: "JE-" + id.toUpperCase(), entry_date: date, memo, source, ref_code: null, created_at: date });
+    lines.forEach(([a, dr, cr], i) => X.ops_journal_lines.push({ id: id + i, entry_id: id, account_code: a, debit: dr, credit: cr })); };
+  je("open1", day(45), "Opening balances", "OPENING", [["1000", 500000, 0], ["1200", 100000, 0], ["3000", 0, 600000]]);
+  je("util1", day(5), "Electricity and water bill", "MANUAL", [["5200", 6500, 0], ["1000", 0, 6500]]);
+  je("rent1", day(4), "Monthly store rent", "MANUAL", [["5300", 25000, 0], ["1000", 0, 25000]]);
+  const ps = day(29), pe = day(15);
+  X.ops_employees.forEach(e => {
+    const c = computePay(e, X.ops_attendance.filter(a => a.employee_id === e.id && a.work_date >= ps && a.work_date <= pe), 15);
+    demoRow("ops_payroll", { payslip_code: `PS-${e.emp_code.slice(-3)}A`, employee_id: e.id, period_start: ps, period_end: pe, days_present: c.days, ot_hours: c.ot,
+      basic_pay: c.basic, ot_pay: c.otPay, gross_pay: c.gross, sss: c.sss, philhealth: c.philhealth, pagibig: c.pagibig, tax: c.tax, net_pay: c.net, status: "Paid", paid_at: day(14) });
+  });
+}
+
+/* ---------- register the new pages in the existing router ---------- */
+Object.assign(TITLES, {
+  "/overview": ["Cycle Overview", "All four business process cycles at a glance"],
+  "/employees": ["Employees", "Human resource cycle · employee master file"],
+  "/attendance": ["Attendance", "Human resource cycle · daily time record"],
+  "/payroll": ["Payroll", "Human resource cycle · compute, review and pay"],
+  "/accounts": ["Chart of Accounts", "Accounting cycle · account list and balances"],
+  "/journal": ["Journal Entries", "Accounting cycle · automatic and manual entries"],
+  "/ledger": ["Ledger & Trial Balance", "Accounting cycle · account activity and balance check"],
+  "/statements": ["Financial Statements", "Accounting cycle · income statement and balance sheet"]
+});
+Object.assign(ROUTES, {
+  "/overview": guard(pageOverview), "/employees": guard(pageEmployees), "/attendance": guard(pageAttendance), "/payroll": guard(pagePayroll),
+  "/accounts": guard(pageAccounts), "/journal": guard(pageJournal), "/ledger": guard(pageLedger), "/statements": guard(pageStatements)
+});
+if (!sb) seedDemoX();
+window.__OPS_READY = true;
+render();   /* re-render so a deep link such as #/payroll opens the new page */
+})();
+</script>
+<script>
+/* ADD-ON: light / dark toggle (same "jb.theme" key as the website) */
+(function () {
+  var KEY = "jb.theme", root = document.documentElement, btn = document.getElementById("theme-toggle");
+  function current() {
+    var a = root.getAttribute("data-theme");
+    return a === "dark" || a === "light" ? a : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  }
+  function label() {
+    if (!btn) return;
+    var t = current() === "dark" ? "Switch to light mode" : "Switch to dark mode";
+    btn.setAttribute("aria-label", t); btn.title = t;
+  }
+  label();
+  if (btn) btn.addEventListener("click", function () {
+    var next = current() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    label();
+  });
+})();
 </script>
 </body>
 </html>

@@ -823,11 +823,15 @@ async function render() {
   if (!firstRender) {
 
     if (T === OUT) {
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "instant"
-      });
+      if (window.Motion) {
+        Motion.scrollTop();
+      } else {
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "instant"
+        });
+      }
     }
 
     const h =
@@ -846,6 +850,10 @@ async function render() {
         ""
       ) + " page"
     );
+  }
+
+  if (window.Motion) {
+    Motion.page(name, T, firstRender);
   }
 
   firstRender = false;
@@ -4692,110 +4700,6 @@ render();
 /* Load customer session for Account nav */
 refreshUser();
 
-/* ================= theme (light / dark) ================= */
-(function initTheme() {
-  const KEY = "jb.theme";
-  const root = document.documentElement;
-  const btn = document.getElementById("theme-toggle");
-  const meta = document.querySelector('meta[name="theme-color"]');
-
-  function current() {
-    const attr = root.getAttribute("data-theme");
-    if (attr === "dark" || attr === "light") return attr;
-    return matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  }
-
-  function apply(theme) {
-    root.setAttribute("data-theme", theme);
-    try {
-      localStorage.setItem(KEY, theme);
-    } catch (_) {}
-
-    if (meta) {
-      meta.content = theme === "dark" ? "#160A09" : "#FB0010";
-    }
-
-    if (btn) {
-      btn.setAttribute(
-        "aria-label",
-        theme === "dark"
-          ? "Switch to light mode"
-          : "Switch to dark mode"
-      );
-      btn.title =
-        theme === "dark"
-          ? "Switch to light mode"
-          : "Switch to dark mode";
-    }
-  }
-
-  /* Honour any value already set by the head script */
-  const saved = (() => {
-    try {
-      return localStorage.getItem(KEY);
-    } catch (_) {
-      return null;
-    }
-  })();
-
-  if (saved === "dark" || saved === "light") {
-    apply(saved);
-  } else {
-    /* Follow system until the user picks explicitly */
-    if (btn) {
-      const mode = current();
-      btn.setAttribute(
-        "aria-label",
-        mode === "dark"
-          ? "Switch to light mode"
-          : "Switch to dark mode"
-      );
-    }
-  }
-
-  if (btn) {
-    btn.addEventListener("click", () => {
-      apply(current() === "dark" ? "light" : "dark");
-      live(
-        current() === "dark"
-          ? "Dark mode on"
-          : "Light mode on"
-      );
-    });
-  }
-
-  /* If user has no explicit preference, react to OS changes */
-  try {
-    matchMedia("(prefers-color-scheme: dark)").addEventListener(
-      "change",
-      () => {
-        const explicit = (() => {
-          try {
-            return localStorage.getItem(KEY);
-          } catch (_) {
-            return null;
-          }
-        })();
-        if (explicit !== "dark" && explicit !== "light") {
-          /* no data-theme attr → CSS media query handles it */
-          root.removeAttribute("data-theme");
-          if (btn) {
-            const mode = current();
-            btn.setAttribute(
-              "aria-label",
-              mode === "dark"
-                ? "Switch to light mode"
-                : "Switch to dark mode"
-            );
-          }
-        }
-      }
-    );
-  } catch (_) {}
-})();
-
 /* ================= scroll reveal ================= */
 (function () {
 
@@ -4816,6 +4720,7 @@ refreshUser();
     ).matches;
 
   if (
+    (window.Motion && window.Motion.active) ||
     calm ||
     !("IntersectionObserver" in window)
   ) {
