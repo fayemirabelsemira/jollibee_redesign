@@ -1,0 +1,21 @@
+<?php
+/* Copy this file to config.local.php and fill in your values.
+   config.local.php is NOT part of the code you share — never commit it. */
+return array(
+    // XAMPP on Kali (local):
+    'db_host' => 'localhost',
+    'db_name' => 'jollibee',
+    'db_user' => 'root',
+    'db_pass' => '',
+
+    // InfinityFree (live) — copy these from the "MySQL Databases" page of your account:
+    // 'db_host' => 'sqlXXX.infinityfree.com',
+    // 'db_name' => 'if0_12345678_jollibee',
+    // 'db_user' => 'if0_12345678',
+    // 'db_pass' => 'your-vpanel-password',
+
+    'debug' => true,            // set to false on the live site
+
+    // Long random string; lets you open api/tools/create_staff.php ONCE. Delete the tool afterwards.
+    'setup_key' => 'put-a-long-random-string-here'
+);

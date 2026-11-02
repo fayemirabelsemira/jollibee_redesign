@@ -242,6 +242,44 @@
     });
   }
 
+  /* ---------- item page: image + options glide in ---------- */
+  function detail() {
+    var d = main.querySelector(".detail");
+    if (!d) return false;
+    var pic = d.querySelector(".pic");
+    var rows = d.querySelectorAll(".dinfo > h2, .dinfo > p, .dinfo > .og, .dinfo > .qtyrow, .dinfo > .dbuy");
+    var tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    if (pic) tl.from(pic, { autoAlpha: 0, y: 24, scale: 0.97, duration: 0.8, clearProps: "opacity,visibility,transform" }, 0);
+    if (rows.length) {
+      tl.from(rows, { autoAlpha: 0, y: 20, duration: 0.6, stagger: 0.07, clearProps: "opacity,visibility,transform" }, 0.12);
+    }
+    var add = d.querySelector("#dadd");
+    if (add) magnet(add, 0.12);
+
+    /* price tick when the button label changes */
+    if (add && window.MutationObserver) {
+      var last = add.textContent;
+      new MutationObserver(function () {
+        if (add.textContent === last) return;
+        last = add.textContent;
+        gsap.fromTo(add, { scale: 0.97 }, { scale: 1, duration: 0.35, ease: "back.out(3)", overwrite: "auto" });
+      }).observe(add, { childList: true, characterData: true, subtree: true });
+    }
+    return true;
+  }
+
+  /* ---------- cart sheet: header, voucher, checkout fields cascade in ---------- */
+  function sheet(target) {
+    try {
+      var els = target.querySelectorAll(".sheet-head, #cart-body > .line, .vrow, .checkout > *, #place, .empty > *");
+      if (!els.length) return;
+      gsap.from(els, {
+        autoAlpha: 0, y: 16, duration: 0.5, stagger: 0.045, delay: 0.12,
+        ease: "power3.out", clearProps: "opacity,visibility,transform"
+      });
+    } catch (e) { console.error("motion sheet failed", e); }
+  }
+
   /* ---------- router hook ---------- */
   function teardown() {
     if (mo) { mo.disconnect(); mo = null; }
@@ -250,12 +288,13 @@
   }
 
   M.page = function (name, target, first) {
-    if (target !== main) return; /* cart sheet: leave the page underneath alone */
+    if (target !== main) { sheet(target); return; } /* cart sheet: leave the page underneath alone */
     teardown();
     try {
       ctx = gsap.context(function () {
         if (!hero(first)) {
           heading();
+          detail();
           gsap.fromTo(main, { autoAlpha: 0, y: 12 },
             { autoAlpha: 1, y: 0, duration: 0.4, ease: "power2.out", clearProps: "opacity,visibility,transform" });
         }

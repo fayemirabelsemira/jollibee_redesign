@@ -1,391 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College of Information Technology and Engineering</title>
-    <!-- Bootstrap 5 CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#FFF9F0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#160A09" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Jollibee: crispy Chickenjoy, Jolly Spaghetti, Kiddie Meals and more. Browse the menu, grab deals and build your order.">
 
-    <style>
-        :root {
-            --cite-red: #d32f2f;
-            --cite-dark-red: #9a0007;
-            --overlay-dark: rgba(20, 20, 20, 0.85);
-        }
+  <title>Jollibee · Joy that tastes like home</title>
 
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        /* Hero Section */
-        .hero-section {
-            background: linear-gradient(var(--overlay-dark), var(--overlay-dark)), 
-                        url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-        }
-
-        .navbar-custom {
-            padding: 20px 0;
-        }
-
-        .nav-link {
-            color: #ffffff !important;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 0 10px;
-            transition: color 0.3s;
-        }
-
-        .nav-link:hover {
-            color: var(--cite-red) !important;
-        }
-
-        .btn-enroll {
-            background-color: var(--cite-red);
-            color: #ffffff;
-            border-radius: 4px;
-            padding: 8px 24px;
-            font-weight: 700;
-            border: none;
-            transition: background 0.3s;
-        }
-
-        .btn-enroll:hover {
-            background-color: var(--cite-dark-red);
-            color: #ffffff;
-        }
-
-        .hero-title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .hero-subtitle {
-            letter-spacing: 4px;
-            font-size: 1.1rem;
-            color: #d1d1d1;
-        }
-
-        /* Overview Section */
-        .overview-section {
-            background: linear-gradient(var(--overlay-dark), var(--overlay-dark)), 
-                        url('https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-            padding: 80px 0;
-            border-bottom: 3px solid var(--cite-red);
-        }
-
-        .section-title {
-            font-weight: 800;
-            letter-spacing: 2px;
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .cite-logo-placeholder {
-            width: 180px;
-            height: 220px;
-            border: 4px solid var(--cite-red);
-            border-radius: 0 0 90px 90px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: auto;
-            background-color: rgba(211, 47, 47, 0.1);
-        }
-
-        /* Activities Section */
-        .activities-section {
-            background: linear-gradient(var(--overlay-dark), var(--overlay-dark)), 
-                        url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-            padding: 80px 0;
-        }
-
-        .activity-card {
-            background-size: cover;
-            background-position: center;
-            height: 250px;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 24px;
-        }
-
-        .activity-badge {
-            position: absolute;
-            bottom: 15px;
-            left: 5%;
-            right: 5%;
-            background-color: rgba(180, 0, 0, 0.85);
-            border: 1px solid #ff4d4d;
-            border-radius: 30px;
-            padding: 8px 16px;
-            font-size: 0.8rem;
-            text-align: center;
-            color: #ffffff;
-        }
-
-        /* Programs Section */
-        .programs-section {
-            background: linear-gradient(var(--overlay-dark), var(--overlay-dark)), 
-                        url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-            padding: 80px 0;
-            border-top: 3px solid var(--cite-red);
-            border-bottom: 3px solid var(--cite-red);
-        }
-
-        .program-icon-circle {
-            width: 80px;
-            height: 80px;
-            background-color: var(--cite-red);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 15px auto;
-            box-shadow: 0 0 15px rgba(211, 47, 47, 0.5);
-        }
-
-        .program-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        /* Team/About Section */
-        .team-section {
-            background-color: #0d0d0d;
-            padding: 80px 0;
-        }
-
-        .team-card {
-            text-align: center;
-        }
-
-        .team-img {
-            width: 140px;
-            height: 160px;
-            object-fit: cover;
-            border-radius: 6px;
-            background-color: #2a2a2a;
-            border: 2px solid #333;
-            margin-bottom: 12px;
-        }
-
-        .team-name {
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        /* Divider Rule */
-        .red-divider {
-            height: 3px;
-            background-color: var(--cite-red);
-            width: 100%;
-            margin: 40px 0;
-        }
-    </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
-    <!-- HERO SECTION -->
-    <header class="hero-section text-center text-white pb-5" id="home">
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-custom container">
-            <div class="container-fluid">
-                <a class="navbar-brand text-white font-weight-bold" href="#">
-                    <i class="fa-solid fa-graduation-cap text-danger me-2"></i><strong>DLSL</strong>
-                </a>
-                <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav align-items-center">
-                        <li class="nav-item"><a class="nav-link" href="#overview">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#activities">Activities</a></li>
-                        <li class="nav-item ms-lg-3"><a class="btn btn-enroll" href="#enroll">Enroll Now!</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+<body data-page="home">
 
-        <!-- Hero Content -->
-        <div class="container my-auto py-5">
-            <p class="hero-subtitle mb-2">WELCOME TO</p>
-            <h1 class="hero-title mb-3">College of Information Technology and Engineering</h1>
-            <p class="hero-subtitle text-uppercase">Turn Your Innovations in Reality</p>
-        </div>
-        <div></div>
-    </header>
+<a class="skip" href="#main" onclick="event.preventDefault();document.getElementById('main').focus()">Skip to content</a>
 
-    <!-- OVERVIEW SECTION -->
-    <section class="overview-section" id="overview">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-7 mb-4 mb-md-0">
-                    <h2 class="section-title">OVERVIEW</h2>
-                    <p class="lead fs-6 text-light lh-base">
-                        The College of Information, Technology, and Engineering (CITE) provides students with an interest in engineering and information technology, a venue to be technically skilled, competent, responsive, and responsible for global development.
-                    </p>
-                    <p class="fst-italic fw-bold text-danger mt-4">
-                        LIVE JESUS IN OUR HEARTS, FOREVER!
-                    </p>
-                </div>
-                <div class="col-md-5 text-center">
-                    <div class="cite-logo-placeholder">
-                        <div class="text-center">
-                            <i class="fa-solid fa-gear fa-3x text-danger"></i>
-                            <div class="fw-bold mt-2">CITE</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<header class="top">
+  <a class="brand" href="#/" aria-label="Jollibee home">
+    <img data-img="l" alt="" width="40" height="40">
+    <span>Jollibee</span>
+  </a>
+  <div class="top-right">
+    <nav aria-label="Main">
+      <a href="#/menu" data-nav="menu">Menu</a>
+      <a href="#/story" data-nav="story">Our story</a>
+      <a href="#/toys" data-nav="toys">Toys</a>
+      <a href="#/promos" data-nav="promos">Promos</a>
+      <a href="#/deals" data-nav="deals">Deals</a>
+      <a href="#/stores" data-nav="stores">Stores</a>
+      <a href="#/account" data-nav="account">Account</a>
 
-    <!-- ACTIVITIES SECTION -->
-    <section class="activities-section" id="activities">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <h2 class="section-title">ACTIVITIES</h2>
-                    <p class="small text-light">
-                        The College of Information, Technology, and Engineering (CITE) provides students with an interest in engineering and information technology, a venue to be technically skilled, competent, responsive, and responsible for global development.
-                    </p>
-                </div>
-            </div>
+      <a href="admin.html" class="nav-admin">Admin</a>
 
-            <!-- Activity Grid -->
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80');">
-                        <div class="activity-badge">
-                            Design, develop, and evaluate computer-based systems, processes, and programs
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80');">
-                        <div class="activity-badge">
-                            A college electrical engineering course includes hands-on laboratory experiments.
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?auto=format&fit=crop&w=800&q=80');">
-                        <div class="activity-badge">
-                            Bachelor of Science (BS) pre-professional degree focusing on technical, structural, and scientific sides of building design
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="activity-card" style="background-image: url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80');">
-                        <div class="activity-badge">
-                            Bachelor of Science (BS) pre-professional degree focusing on building design
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+      <button class="cartbtn" type="button" data-route="#/cart" aria-label="Cart">
+        <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 10.5h10.2L20 7H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
+        <span id="cnt" class="cnt">0</span>
+      </button>
+    </nav>
+  </div>
+</header>
 
-    <!-- PROGRAMS OFFERED SECTION -->
-    <section class="programs-section text-center" id="programs">
-        <div class="container">
-            <h2 class="section-title display-6">PROGRAMS OFFERED</h2>
-            <p class="text-light mb-5">Explore the programs offered by CITE</p>
+<!-- ===== Left sidebar: Jollibee Information System (always visible, collapsible) ===== -->
+<aside class="side" id="side" aria-label="Jollibee Information System" data-lenis-prevent>
+  <div class="side-head">
+    <span class="side-bee">J</span>
+    <div>
+      <strong>Jollibee</strong>
+      <small>Information System</small>
+    </div>
+  </div>
 
-            <div class="row g-4 justify-content-center">
-                <!-- Program Item -->
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="program-icon-circle"><i class="fa-solid fa-city"></i></div>
-                    <div class="program-title">BS Architecture Design And Planning</div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="program-icon-circle"><i class="fa-solid fa-microchip"></i></div>
-                    <div class="program-title">BS Computer Engineering</div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="program-icon-circle"><i class="fa-solid fa-laptop-code"></i></div>
-                    <div class="program-title">BS Computer Science</div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="program-icon-circle"><i class="fa-solid fa-bolt"></i></div>
-                    <div class="program-title">BS Electrical Engineering</div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="program-icon-circle"><i class="fa-solid fa-network-wired"></i></div>
-                    <div class="program-title">BS Electronics</div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="program-icon-circle"><i class="fa-solid fa-film"></i></div>
-                    <div class="program-title">BSEMC Animation</div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2 mt-4">
-                    <div class="program-icon-circle"><i class="fa-solid fa-gamepad"></i></div>
-                    <div class="program-title">BSEMC Games</div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2 mt-4">
-                    <div class="program-icon-circle"><i class="fa-solid fa-industry"></i></div>
-                    <div class="program-title">BS Industrial Engineering</div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2 mt-4">
-                    <div class="program-icon-circle"><i class="fa-solid fa-code"></i></div>
-                    <div class="program-title">BSIT</div>
-                </div>
-                <div class="col-6 col-md-4 col-lg-2 mt-4">
-                    <div class="program-icon-circle"><i class="fa-solid fa-desktop"></i></div>
-                    <div class="program-title">Associate In CT</div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="side-company">
+    <strong>Jollibee Foods Corporation</strong>
+    <p>
+      A Filipino fast-food company that grew from a small ice cream parlor
+      into one of the best-loved restaurant brands in the Philippines,
+      known for affordable, convenient meals like Chickenjoy and Jolly
+      Spaghetti. It operates many branches in the Philippines and abroad.
+    </p>
+  </div>
 
-    <!-- ABOUT / TEAM SECTION -->
-    <section class="team-section" id="about">
-        <div class="container">
-            <h3 class="fw-bold mb-4">About</h3>
-            <div class="row g-4 justify-content-start">
-                <div class="col-6 col-md-3">
-                    <div class="team-card">
-                        <img src="https://via.placeholder.com/140x160/333/fff?text=Cyla" alt="Natividad, Cyla" class="team-img">
-                        <div class="team-name">Natividad, Cyla</div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="team-card">
-                        <img src="https://via.placeholder.com/140x160/333/fff?text=Arckhen" alt="Lantican, Arckhen" class="team-img">
-                        <div class="team-name">Lantican, Arckhen</div>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="team-card">
-                        <img src="https://via.placeholder.com/140x160/333/fff?text=Faye" alt="Semira, Faye" class="team-img">
-                        <div class="team-name">Semira, Faye</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <nav class="side-nav" aria-label="Information system">
+    <a href="ops.html#/">Dashboard</a>
 
-    <!-- Bootstrap 5 JS Bundle CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="side-group">Expenditure cycle</div>
+    <a href="ops.html#/ordering">Ordering to Supplier</a>
+    <a href="ops.html#/supplier-payments">Payment to Supplier</a>
+    <a href="ops.html#/inventory">Inventory</a>
+
+    <div class="side-group">Revenue cycle</div>
+    <a href="ops.html#/sales">Sales from Customer</a>
+    <a href="ops.html#/customer-payments">Payment from Customer</a>
+
+    <div class="side-group">Human resource cycle</div>
+    <a href="ops.html#/employees">Employees</a>
+    <a href="ops.html#/attendance">Attendance</a>
+    <a href="ops.html#/payroll">Payroll</a>
+
+    <div class="side-group">Accounting cycle</div>
+    <a href="ops.html#/accounts">Chart of Accounts</a>
+    <a href="ops.html#/journal">Journal Entries</a>
+    <a href="ops.html#/ledger">Ledger &amp; Trial Balance</a>
+    <a href="ops.html#/statements">Financial Statements</a>
+    <a href="ops.html#/company">Company Info</a>
+  </nav>
+</aside>
+
+<button type="button" class="side-toggle" id="side-toggle" aria-controls="side" aria-expanded="true" aria-label="Hide sidebar" title="Hide / show sidebar">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+</button>
+
+<main id="main" tabindex="-1"></main>
+
+<footer>
+  <a class="logo" href="#/" aria-label="Jollibee home">
+    <img data-img="l" alt="Jollibee logo" width="72" height="72">
+  </a>
+  <p>
+    Student project website · menu items and prices are sample content.
+    Snoopy and Woodstock toy photos belong to their respective owners.
+  </p>
+</footer>
+
+<div class="bar" id="bar" role="status">
+  <span class="bar-ic" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24"><path d="M3 4h2l2.4 10.5h10.2L20 7H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg></span>
+  <span id="sum"><small id="sumn"></small><b id="sumt"></b></span>
+  <button class="clr" type="button" onclick="clr()">Clear</button>
+  <button class="go" type="button" data-route="#/cart">Review order <span aria-hidden="true">→</span></button>
+</div>
+
+<div class="scrim" id="scrim" data-close hidden></div>
+<div class="sheet" id="sheet" data-lenis-prevent role="dialog" aria-modal="true" aria-label="Your order" hidden></div>
+
+<nav class="tabbar" aria-label="Quick navigation">
+  <a href="#/menu" data-nav="menu">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+    <span>Menu</span>
+  </a>
+  <a href="#/deals" data-nav="deals">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12l-8 8-9-9V4h7z"/><circle cx="8" cy="8" r="1.5"/></svg>
+    <span>Deals</span>
+  </a>
+  <a href="#/toys" data-nav="toys">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M12 8v12M3 12h18M12 8c-2-4-6-4-6-1.500S10 8 12 8zm0 0c2-4 6-4 6-1.500S14 8 12 8z"/></svg>
+    <span>Toys</span>
+  </a>
+  <a href="#/account" data-nav="account">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 19c1.5-3.5 4-5 7-5s5.5 1.5 7 5"/></svg>
+    <span>Account</span>
+  </a>
+  <button class="cartbtn" type="button" data-route="#/cart" data-nav="cart" aria-label="Cart">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 10.5h10.2L20 7H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
+    <span>Cart</span>
+    <b class="cnt" aria-hidden="true">0</b>
+  </button>
+</nav>
+
+<div id="live" class="sr" aria-live="polite"></div>
+
+<noscript>
+  <p style="padding:20px;text-align:center">
+    This site needs JavaScript to show the menu and your order.
+  </p>
+</noscript>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+<script src="art.js"></script>
+<script src="api.js"></script>
+<script src="motion.js"></script>
+<script src="app.js"></script>
+
+<!-- Sidebar remove / extend -->
+<script>
+(function () {
+  var body = document.body;
+  var btn = document.getElementById("side-toggle");
+  if (!btn) return;
+  var KEY = "jb.sidebar";
+  var mobile = matchMedia("(max-width:768px)");
+
+  function isOpen() {
+    return mobile.matches
+      ? body.classList.contains("side-open")
+      : !body.classList.contains("side-collapsed");
+  }
+  function sync() {
+    var open = isOpen();
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    btn.setAttribute("aria-label", open ? "Hide sidebar" : "Show sidebar");
+    btn.title = open ? "Hide sidebar" : "Show sidebar";
+  }
+  function set(open) {
+    if (mobile.matches) {
+      body.classList.toggle("side-open", !!open);
+    } else {
+      body.classList.toggle("side-collapsed", !open);
+      try { localStorage.setItem(KEY, open ? "open" : "closed"); } catch (e) {}
+    }
+    sync();
+  }
+  function toggle(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    set(!isOpen());
+  }
+
+  try {
+    if (!mobile.matches && localStorage.getItem(KEY) === "closed") {
+      body.classList.add("side-collapsed");
+    }
+  } catch (e) {}
+
+  btn.addEventListener("click", toggle, true);
+  btn.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggle(e);
+    }
+  });
+
+  mobile.addEventListener("change", function () {
+    if (mobile.matches) {
+      body.classList.remove("side-collapsed");
+      body.classList.remove("side-open");
+    } else {
+      body.classList.remove("side-open");
+      try {
+        if (localStorage.getItem(KEY) === "closed") body.classList.add("side-collapsed");
+        else body.classList.remove("side-collapsed");
+      } catch (e) {}
+    }
+    sync();
+  });
+
+  sync();
+})();
+</script>
+
 </body>
 </html>

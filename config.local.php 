@@ -1,0 +1,11 @@
+<?php
+return array(
+    'db_host' => 'sql100.infinityfree.com',
+    'db_name' => 'if0_43305161_jollibee',
+    'db_user' => 'if0_43305161',
+    'db_pass' => 'a6auLoJnQsTyrp',
+
+    'debug' => false,
+
+    'setup_key' => ''
+);

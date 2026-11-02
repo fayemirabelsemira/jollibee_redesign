@@ -1,66 +1,59 @@
-/* api.js — Supabase implementation of the same API object app.js already uses.
-   Same method names and return shapes as the old mock, so app.js needs no changes.
-   Load AFTER the supabase-js CDN script, BEFORE app.js. */
+/* api.js — PHP backend implementation of the API object that app.js already uses.
+   Same method names and return shapes as the old Supabase version, so app.js needs no changes.
+   Load BEFORE app.js (the supabase-js script tag is no longer needed). */
 "use strict";
 
-/* Project Settings → API in the Supabase dashboard. The anon key is PUBLIC by design;
-   Row Level Security + the SQL functions are what protect your data. NEVER put the service_role key here. */
-const SUPABASE_URL = "https://oougwsdtbhpisflsociq.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_VilEjy5s_i2bMNx5v6VdtQ_AHIJgCv7";
+/* Relative on purpose: the site and the API live on the same domain (localhost, then InfinityFree),
+   so there is no CORS to configure. */
+const API_URL = "api/index.php";
+const AUTH_KEY = "jb.auth.v1";
 
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true
+const Auth = {
+  get() {
+    try { return JSON.parse(localStorage.getItem(AUTH_KEY) || "null"); } catch (e) { return null; }
+  },
+  set(session) {
+    try {
+      if (session) localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+      else localStorage.removeItem(AUTH_KEY);
+    } catch (e) {}
+  },
+  token() {
+    const s = this.get();
+    return s && s.access_token ? s.access_token : null;
   }
-});
+};
 
-/* Placing an order needs a session.
-   Prefer an existing signed-in user (customer or staff).
-   Fall back to anonymous sign-in for guest checkout
-   (enable it: Authentication → Providers → Anonymous). */
-let sessionP = null;
+/* One door to the server. Server errors carry a readable message; anything else is hidden. */
+async function call(fn, body) {
+  const headers = { "Content-Type": "application/json" };
+  const t = Auth.token();
+  if (t) headers["X-Auth-Token"] = t;
 
-function ensureSession() {
-  return sessionP || (sessionP = (async () => {
-    const { data } = await sb.auth.getSession();
-
-    if (data.session) {
-      return data.session;
-    }
-
-    const { data: d, error } = await sb.auth.signInAnonymously();
-
-    if (error) {
-      throw error;
-    }
-
-    return d.session;
-  })().catch(e => {
-    sessionP = null;
-    throw e;
-  }));
-}
-
-function clearSessionCache() {
-  sessionP = null;
-}
-
-/* Our SQL functions raise readable messages (SQLSTATE P0001): show those, hide everything else. */
-async function rpc(fn, args) {
-  const { data, error } = await sb.rpc(fn, args);
-
-  if (error) {
-    console.error(fn, error);
-
-    throw new Error(
-      error.code === "P0001"
-        ? error.message
-        : "Something went wrong. Please try again."
-    );
+  let res;
+  try {
+    res = await fetch(API_URL + "?fn=" + encodeURIComponent(fn), {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body || {})
+    });
+  } catch (e) {
+    console.error(fn, e);
+    throw new Error("Cannot reach the server. Check your connection and try again.");
   }
 
-  return data;
+  let json;
+  try {
+    json = await res.json();
+  } catch (e) {
+    console.error(fn, "non-JSON response", res.status);
+    throw new Error("The server sent an unexpected response. Please try again.");
+  }
+
+  if (json.error) {
+    throw new Error(json.error);
+  }
+  return json.data;
 }
 
 /* Send only what the server needs; it recomputes every price itself. */
@@ -81,32 +74,20 @@ const slimCtx = c => ({
   address: c.address || null
 });
 
-/* Tracking tokens for orders placed in this browser.
-   Needed to read an order's status. */
+/* Tracking tokens for orders placed in this browser. Needed to read an order's status. */
 const TOKEN_KEY = "jb.orderTokens.v1";
 
 const tokens = {
   all() {
-    try {
-      return JSON.parse(
-        localStorage.getItem(TOKEN_KEY) || "{}"
-      );
-    } catch (e) {
-      return {};
-    }
+    try { return JSON.parse(localStorage.getItem(TOKEN_KEY) || "{}"); } catch (e) { return {}; }
   },
-
   set(id, t) {
     try {
       const m = this.all();
       m[id] = t;
-      localStorage.setItem(
-        TOKEN_KEY,
-        JSON.stringify(m)
-      );
+      localStorage.setItem(TOKEN_KEY, JSON.stringify(m));
     } catch (e) {}
   },
-
   get(id) {
     return this.all()[id];
   }
@@ -114,75 +95,51 @@ const tokens = {
 
 const API = {
 
-  /* =========================================================
-     CUSTOMER AUTH
-     ========================================================= */
+  /* ================= CUSTOMER AUTH ================= */
 
   async signUpCustomer(email, password) {
-    const { data, error } = await sb.auth.signUp({
+    const r = await call("auth_signup", {
       email: String(email || "").trim(),
       password: String(password || "")
     });
-
-    if (error) {
-      throw new Error(error.message || "Sign-up failed.");
-    }
-
-    clearSessionCache();
-    return data.session || data.user;
+    Auth.set(r.session);
+    return r.session;
   },
 
   async signInCustomer(email, password) {
-    const { data, error } = await sb.auth.signInWithPassword({
+    const r = await call("auth_signin", {
       email: String(email || "").trim(),
       password: String(password || "")
     });
-
-    if (error) {
-      throw new Error(error.message || "Sign-in failed.");
-    }
-
-    clearSessionCache();
-    return data.session;
+    Auth.set(r.session);
+    return r.session;
   },
 
   async signOutCustomer() {
-    const { error } = await sb.auth.signOut();
-
-    if (error) {
-      throw new Error(error.message || "Sign-out failed.");
-    }
-
-    clearSessionCache();
+    try { await call("auth_signout", {}); } catch (e) { /* token may already be gone */ }
+    Auth.set(null);
   },
 
-  /* =========================================================
-     CUSTOMER API
-     ========================================================= */
+  /* ================= CUSTOMER API ================= */
 
   getMenu() {
-    return rpc("get_menu");
+    return call("get_menu", {});
   },
 
   getStores(query = "") {
-    return rpc("get_stores", {
-      p_query: query
-    });
+    return call("get_stores", { p_query: query });
   },
 
   getVouchers() {
-    return rpc("get_vouchers");
+    return call("get_vouchers", {});
   },
 
   validateVoucher(code, cartTotal, cart = []) {
-    return rpc("validate_voucher", {
-      p_code: code,
-      p_cart: slimCart(cart)
-    });
+    return call("validate_voucher", { p_code: code, p_cart: slimCart(cart) });
   },
 
   calculateQuote(cart, orderCtx, vouchers = []) {
-    return rpc("calculate_quote", {
+    return call("calculate_quote", {
       p_cart: slimCart(cart),
       p_ctx: slimCtx(orderCtx),
       p_vouchers: vouchers
@@ -190,9 +147,8 @@ const API = {
   },
 
   async createOrder(p) {
-    await ensureSession();
-
-    const r = await rpc("create_order", {
+    /* Guests can order: no sign-in needed. If a customer is signed in, the order is linked to them. */
+    const r = await call("create_order", {
       p_payload: {
         items: slimCart(p.items),
         orderCtx: slimCtx(p.orderCtx),
@@ -209,97 +165,63 @@ const API = {
 
   getOrderStatus(orderId) {
     const t = tokens.get(orderId);
-
     if (!t) {
-      return Promise.reject(
-        new Error("Order not found")
-      );
+      return Promise.reject(new Error("Order not found"));
     }
-
-    return rpc("get_order_status", {
-      p_code: orderId,
-      p_token: t
-    });
+    return call("get_order_status", { p_code: orderId, p_token: t });
   },
 
-  /* =========================================================
-     STAFF / ADMIN API
-     ========================================================= */
+  /* ================= STAFF / ADMIN API ================= */
 
   async signInStaff(email, password) {
-    const { data, error } = await sb.auth.signInWithPassword({
+    const r = await call("auth_signin", {
       email: String(email || "").trim(),
-      password: String(password || "")
+      password: String(password || ""),
+      staffOnly: true
     });
-
-    if (error) {
-      throw new Error(
-        error.message || "Sign-in failed."
-      );
-    }
-
-    clearSessionCache();
-    return data.session;
+    Auth.set(r.session);
+    return r.session;
   },
 
   async signOut() {
-    const { error } = await sb.auth.signOut();
-
-    if (error) {
-      throw new Error(
-        error.message || "Sign-out failed."
-      );
-    }
-
-    clearSessionCache();
+    try { await call("auth_signout", {}); } catch (e) {}
+    Auth.set(null);
   },
 
   async getSession() {
-    const { data, error } = await sb.auth.getSession();
-
-    if (error) {
-      throw new Error(
-        error.message || "Could not read your session."
-      );
+    if (!Auth.token()) return null;
+    try {
+      const r = await call("auth_session", {});
+      if (!r.session) {
+        Auth.set(null);
+        return null;
+      }
+      return r.session;
+    } catch (e) {
+      return null;
     }
-
-    return data.session;
   },
 
   adminListOrders(view = "active") {
-    return rpc("admin_list_orders", {
-      p_view: view
-    });
+    return call("admin_list_orders", { p_view: view });
   },
 
   adminSetOrderStatus(code, status) {
-    return rpc("admin_set_order_status", {
-      p_code: code,
-      p_status: status
-    });
+    return call("admin_set_order_status", { p_code: code, p_status: status });
   },
 
+  /* No websockets on free PHP hosting: poll every 5 seconds instead.
+     Same contract as before: returns a handle you pass to removeRealtimeChannel(). */
   subscribeToOrders(onChange) {
-    const channel = sb
-      .channel("staff-order-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "orders"
-        },
-        onChange
-      )
-      .subscribe();
-
-    return channel;
+    const id = setInterval(() => {
+      try { onChange(); } catch (e) { console.error(e); }
+    }, 5000);
+    return { id };
   },
 
   removeRealtimeChannel(channel) {
-    return channel
-      ? sb.removeChannel(channel)
-      : Promise.resolve();
+    if (channel && channel.id) clearInterval(channel.id);
+    return Promise.resolve();
   }
 
 };

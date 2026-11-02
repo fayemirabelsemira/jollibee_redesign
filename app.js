@@ -223,6 +223,14 @@ function parseHash() {
     seg = ["404"];
   }
 
+  /* Short URL: #/previewcart opens the Chickenjoy customizer */
+  if (seg.length === 1 && seg[0] === "previewcart") {
+    return {
+      seg: ["item", "CHK-JOY"],
+      q: new URLSearchParams(qs || "v=CHK-JOY-1")
+    };
+  }
+
   return {
     seg,
     q: new URLSearchParams(qs)
@@ -526,7 +534,7 @@ function renderTrackOrder(data) {
           ? `
             <div class="track-eta">
               <div class="track-eta-icon" aria-hidden="true">
-                ⏱
+                <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg>
               </div>
               <div>
                 <small>Estimated time</small>
@@ -879,7 +887,8 @@ async function refreshUser() {
 
 function updateAccountNav() {
   document.querySelectorAll('[data-nav="account"]').forEach(a => {
-    a.textContent = AppState.user ? "Account" : "Sign in";
+    const label = a.querySelector("span") || a;
+    label.textContent = AppState.user ? "Account" : "Sign in";
   });
 }
 
@@ -980,6 +989,7 @@ const VIEWS = {
           <div class="hero-in">
 
             <div>
+              <span class="eyebrow"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.500l2.600 7.100 7.400.4-5.800 4.600 2 7.300L12 16.800 5.800 20.900l2-7.300L2 9l7.400-.4z"/></svg>Bida ang saya</span>
               <h1>
                 Joy that tastes
                 <span>like home.</span>
@@ -1027,6 +1037,39 @@ const VIEWS = {
             <path d="M0 40 Q150 0 300 30 T600 30 T900 30 T1200 25 V70 H0Z"/>
           </svg>
         </div>
+
+        <section class="hiw">
+          <div class="in">
+
+            <h2>Order in three steps</h2>
+
+            <p class="lead">
+              From craving to table, without leaving this page.
+            </p>
+
+            <div class="facts">
+              <div class="fact">
+                <span class="stepico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3v8M4 3v5a3 3 0 006 0V3M7 11v10M17 3c-2 1.5-3 4-3 7h3v11"/></svg></span>
+                <span class="stepn" aria-hidden="true">01</span>
+                <h3>Pick your favorites</h3>
+                <p>Browse the menu, search, and customize size and add-ons.</p>
+              </div>
+              <div class="fact">
+                <span class="stepico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 016 0v2"/></svg></span>
+                <span class="stepn" aria-hidden="true">02</span>
+                <h3>Choose pickup or delivery</h3>
+                <p>Select a store, add a voucher and review your total.</p>
+              </div>
+              <div class="fact">
+                <span class="stepico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.800 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+                <span class="stepn" aria-hidden="true">03</span>
+                <h3>Track it live</h3>
+                <p>Watch your order move from received to ready.</p>
+              </div>
+            </div>
+
+          </div>
+        </section>
 
         <section>
           <div class="in">
@@ -1154,7 +1197,7 @@ const VIEWS = {
 
         <section
           id="find"
-          style="padding-top:0"
+          class="findband"
         >
           <div class="in">
 
@@ -1656,7 +1699,7 @@ const VIEWS = {
       html: `
         <section
           id="promos"
-          style="background:var(--sun-l)"
+          class="promos-band"
         >
           <div class="in">
 
@@ -2004,7 +2047,7 @@ const VIEWS = {
       title: "Account · Jollibee",
       html: `
         <section>
-          <div class="in" style="max-width:480px">
+          <div class="in acct">
             <h1>Your account</h1>
             <p class="lead" id="acct-lead">
               Sign in to keep orders under your email, or continue as guest at checkout.
@@ -2016,8 +2059,8 @@ const VIEWS = {
             </div>
 
             <div id="acct-forms">
-              <div class="admin-panel" style="margin-bottom:20px">
-                <h2 style="font-size:22px;margin-bottom:12px">Sign in</h2>
+              <div class="admin-panel">
+                <h2>Sign in</h2>
                 <form id="acct-login" class="admin-form">
                   <label>Email
                     <input type="email" id="login-email" required autocomplete="username">
@@ -2030,7 +2073,7 @@ const VIEWS = {
               </div>
 
               <div class="admin-panel">
-                <h2 style="font-size:22px;margin-bottom:12px">Create account</h2>
+                <h2>Create account</h2>
                 <form id="acct-signup" class="admin-form">
                   <label>Email
                     <input type="email" id="signup-email" required autocomplete="username">
@@ -2375,7 +2418,7 @@ function initPanel() {
 
       <div class="line" id="r-disc" hidden>
         <span>Discount</span>
-        <b id="t-disc" style="color:#2f9e63"></b>
+        <b id="t-disc" class="ok-text"></b>
       </div>
 
       <div class="line">
@@ -2392,7 +2435,6 @@ function initPanel() {
     <div class="vrow">
       <input
         class="fld"
-        style="margin:0"
         id="vin"
         placeholder="Voucher code"
         aria-label="Voucher code"
@@ -2403,8 +2445,8 @@ function initPanel() {
 
     <div class="vmsg" id="vmsg" role="status"></div>
 
-    <div id="checkout-opts" hidden style="margin-top:16px;display:grid;gap:12px">
-      <fieldset class="og" style="margin:0">
+    <div id="checkout-opts" class="checkout" hidden>
+      <fieldset class="og">
         <legend>Order type</legend>
         <label class="opt">
           <input type="radio" name="omode" value="pickup" ${modePickup ? "checked" : ""}>
@@ -2418,7 +2460,7 @@ function initPanel() {
 
       <label>
         Store
-        <select class="fld" id="ostore" style="border-radius:14px;min-height:48px"></select>
+        <select class="fld" id="ostore"></select>
       </label>
 
       <label id="oaddr-wrap" ${modePickup ? "hidden" : ""}>
@@ -2453,7 +2495,7 @@ function initPanel() {
         >
       </label>
 
-      <fieldset class="og" style="margin:0">
+      <fieldset class="og">
         <legend>Payment method</legend>
         <label class="opt">
           <input type="radio" name="opay" value="cod" ${payCod ? "checked" : ""}>
@@ -2470,13 +2512,12 @@ function initPanel() {
       class="cta"
       id="place"
       type="button"
-      style="width:100%;border:0;margin-top:12px;cursor:pointer"
       hidden
     >
       Place order
     </button>
 
-    <p id="pmsg" role="status" style="font-weight:700"></p>
+    <p id="pmsg" role="status"></p>
   `;
 
   applyImgs(PANEL);
@@ -2572,6 +2613,8 @@ function lineEl(c) {
 
   li.innerHTML =
     html`
+      <img class="lt" alt="" width="64" height="64" loading="lazy">
+
       <div>
         <b class="n"></b>
         <br>
@@ -2604,6 +2647,13 @@ function lineEl(c) {
   li.querySelector(".n")
     .textContent =
     it.name;
+
+  {
+    const th = li.querySelector(".lt");
+    const src = typeof PRODUCT_IMG !== "undefined" && PRODUCT_IMG[it.sku];
+    if (src) th.src = src;
+    else th.hidden = true;
+  }
 
   li.querySelector(
     "[data-act=dec]"
@@ -3673,7 +3723,6 @@ function renderTickets(vs) {
 
             <div
               class="row2"
-              style="margin-top:0"
             >
 
               <button
@@ -3807,6 +3856,8 @@ function itemView(
     html`
 
       <div class="pic"></div>
+
+      <div class="dinfo">
 
       <h2>
         ${it.name}
@@ -3943,34 +3994,38 @@ function itemView(
         )
       }
 
-      <label class="opt">
+      <div class="qtyrow">
+        <span id="dq-l">Quantity</span>
 
-        Quantity
+        <div class="qty step" role="group" aria-labelledby="dq-l">
+          <button type="button" data-step="-1" aria-label="Decrease quantity">−</button>
+          <input
+            class="qin"
+            id="dq"
+            type="number"
+            min="1"
+            max="20"
+            value="1"
+            inputmode="numeric"
+          >
+          <button type="button" data-step="1" aria-label="Increase quantity">+</button>
+        </div>
+      </div>
 
-        <input
-          class="fld"
-          id="dq"
-          type="number"
-          min="1"
-          max="20"
-          value="1"
-          style="width:84px;margin:0"
-        >
+      <div class="dbuy">
+        <button
+          class="cta"
+          id="dadd"
+          type="button"
+        ></button>
 
-      </label>
+        <p
+          id="dmsg"
+          role="status"
+        ></p>
+      </div>
 
-      <button
-        class="cta"
-        id="dadd"
-        type="button"
-        style="width:100%;border:0;margin-top:8px;cursor:pointer"
-      ></button>
-
-      <p
-        id="dmsg"
-        role="status"
-        style="font-weight:700"
-      ></p>
+      </div>
     `;
 
   const btn =
@@ -4120,6 +4175,14 @@ function itemView(
     "input",
     upd
   );
+
+  w.addEventListener("click", e => {
+    const st = e.target.closest("[data-step]");
+    if (!st) return;
+    const q = w.querySelector("#dq");
+    q.value = Math.max(1, Math.min(20, (Math.floor(+q.value) || 1) + (+st.dataset.step)));
+    q.dispatchEvent(new Event("input", { bubbles: true }));
+  });
 
   upd();
 
@@ -4307,6 +4370,14 @@ document.addEventListener(
         el.querySelector(
           "select.var"
         );
+
+      if (
+        it.sku === "CHK-JOY" &&
+        (!sel || sel.value === "CHK-JOY-1")
+      ) {
+        nav("#/previewcart");
+        return;
+      }
 
       nav(
         href(

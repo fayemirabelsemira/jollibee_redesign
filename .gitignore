@@ -1,4 +1,8 @@
+config.local.php
+.env
+.env.local
 .DS_Store
-node_modules/
-.wrangler/
+
+config.local.php
+api.supabase.js.bak
 .env*
